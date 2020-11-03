@@ -174,6 +174,7 @@ public class X2DObject {
         GLES30.glUniform1f(apttId,changeAlpha);
         GLES30.glUniformMatrix4fv ( mMVPMatrixIndexId, 1, false, mMVPMatrix.getAsFloatBuffer() );
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_STRIP, 0, 6);//6 画顶点数量
+
         GLES30.glDisable(GLES30.GL_BLEND);
 
     }
@@ -331,6 +332,12 @@ public class X2DObject {
                         }else{
                             isStop = true;
                         }
+
+                        if(circle){
+                            xVariation = x_offset;//循环
+                            yVariation = y_offset;
+                            zoomMultiples = minZoom;
+                        }
                         // xVariation = x_offset;
                         //yVariation = y_offset;
                     }else if(!isYPositive && yVariation <= y_destination){
@@ -340,6 +347,12 @@ public class X2DObject {
                             yVariation = y_destination;
                         }else{
                             isStop = true;
+                        }
+
+                        if(circle){
+                            xVariation = x_offset;//循环
+                            yVariation = y_offset;
+                            zoomMultiples = minZoom;
                         }
                         //xVariation = x_offset;
                         //yVariation = y_offset;

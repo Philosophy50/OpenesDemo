@@ -79,7 +79,8 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
    X2DObject x2DObject,x2DObject1,x2DObject2,x2DObject3,x2Dobject4,x2Dobject5,x2Dobject6;
    X2DObject mPopWindow,mPopWindowLight,mPopWinodwAtom;
 
-   X2DObject mTreeLeft_1,mTreeRight_1;
+   X2DObject mTreeLeft_1,mTreeRight_1,mTreeLeft_2,mTreeRight_2;
+
    public HelloTriangleRenderer ( Context context )
    {
       mContext = context;
@@ -202,12 +203,21 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       textureAtom = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_atomization.png");
       textureTree = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_tree.png");
 
-      mTreeLeft_1 = new X2DObject(2f,3f,          0f,0f,         200f,200f,textureTree,programObject2);
+      mTreeLeft_1 = new X2DObject(2f,3f,          -3f,-2f,         200f,200f,textureTree,programObject2);
       mTreeLeft_1.setDestination(-16f,-11f,true);
       mTreeLeft_1.setisNeedZoom(true,true,false,false);
       mTreeLeft_1.setZoomValue(0.1f,1.3f);
       mTreeLeft_1.resetZoom(0.3f,true);
       mTreeLeft_1.setcircle(true);
+
+      mTreeLeft_2 = new X2DObject(2f,3f,          -1.5f,-1f,         200f,200f,textureTree,programObject2);
+      mTreeLeft_2.setDestination(-14.5f,-10f,true);
+      mTreeLeft_2.setisNeedZoom(true,true,false,false);
+      mTreeLeft_2.setZoomValue(0.1f,1.3f);
+      mTreeLeft_2.resetZoom(0.3f,true);
+      mTreeLeft_2.setcircle(true);
+
+
 
       x2DObject =   new X2DObject(10f,10f,   -2f,7f,   200f,200f,textureR,programObject2);
       x2DObject.setDestination(2f,5f,false);
@@ -333,6 +343,17 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
               mMVPMatrix.getAsFloatBuffer() );
       //通知绘制图元
 
+
+
+
+
+      mTreeLeft_2.drawSelf();
+
+      mTreeLeft_1.drawSelf();
+      mPopWindowLight.drawSelf();
+      mPopWindow.drawSelf();
+      mPopWinodwAtom.drawSelf();
+
       x2DObject.drawSelf();
       x2DObject1.drawSelf();
       x2DObject2.drawSelf();
@@ -340,13 +361,6 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       x2Dobject4.drawSelf();
       x2Dobject5.drawSelf();
       x2Dobject6.drawSelf();
-
-      mTreeLeft_1.drawSelf();
-
-
-      mPopWindowLight.drawSelf();
-      mPopWindow.drawSelf();
-      mPopWinodwAtom.drawSelf();
       //GLES30.glDrawArrays ( GLES30.GL_TRIANGLE_STRIP, 0, 6 );
 
 
@@ -497,6 +511,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             mPopWinodwAtom.setisStartPictureMove(true);
 
             mTreeLeft_1.setisStartPictureMove(true);
+            mTreeLeft_2.setisStartPictureMove(true);
             touchTime++;
             break;
          case 1:
