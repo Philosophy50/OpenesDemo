@@ -37,8 +37,11 @@ public class X2DObject {
     private float y_offset;                 //起点中心的y坐标，即图片的y偏移量
     private float x_destination = 0f;       //终点中心的x坐标
     private float y_destination = 0f;       //终点中心的y坐标
-    private float moveRate = 50f;          //移动的速率，数字越小移动越快
+    private float moveRate = 500;          //移动的速率，数字越小移动越快
     private boolean isXPositive,isYPositive;//   图片向X、Y轴的移动方向
+
+
+    private float timeUp = 4.5f;  //这个就是 跑步的速度，*倍数
     /**
      *
      * @param x         图片的  1/2  x长度
@@ -228,6 +231,8 @@ public class X2DObject {
     public void setcircle(boolean param){
         circle = param;
     }
+
+    float zscale=-20f;
     private void update()   //计算矩阵
     {
         if ( mLastTime == 0 )
@@ -248,35 +253,7 @@ public class X2DObject {
 
         if(isStartPictureMove) {
 
-            if(isNeedZoom){
-                if(increase){
-                    if (zoomMultiples <= maxZoom) {
-                        zoomMultiples += 0.01f;
-                        if(issmall && (zoomMultiples>=maxZoom)){
-                            increase = false;
-                        }
-                    }
-                }else{
-                    if (zoomMultiples >= minZoom) {
-                        zoomMultiples -= 0.01f;
-                    }else{
-                        ActionInstance.getInstance().setActionType(true);
-                        isStop = true;
-                    }
-                }
-            }
-             /*
-                if (zoomMultiples >= 0.3f && isBig) {
-                    isBig = false;
-                } else if (zoomMultiples <= 0.1f && !isBig) {
-                    isBig = true;
-                }
-                if (isBig) {
-                    zoomMultiples += 0.01f;
-                } else {
-                    zoomMultiples -= 0.01f;
-                }
-            */
+
             if(isNeedAlpha) {
 //                 if (changeAlpha >= 1.0f && isBig) {
 //                     isBig = false;
@@ -294,8 +271,13 @@ public class X2DObject {
             }
 
             if(isNeedMove) {
-                xVariation +=  (x_destination - x_offset)/moveRate;
-                yVariation +=  (y_destination-y_offset)/moveRate;
+                xVariation +=    (x_destination - x_offset)/(moveRate)  *timeUp;
+                yVariation +=   (y_destination-y_offset)/(moveRate)   *timeUp;
+                if(zBoolean) {
+                    zscale +=    ( 20f/((moveRate)*1.78) ) *timeUp ;
+
+                }
+
                 if(isXPositive && xVariation >= x_destination ) {//TODO 精度
                     if(isYPositive && yVariation >= y_destination){
                         //  isStop = true;
@@ -309,6 +291,9 @@ public class X2DObject {
                         if(circle){
                             xVariation = x_offset;  //循环
                             yVariation = y_offset;
+                            zoomMultiples = minZoom;
+                                zscale = -20.0f;
+
                         }
                     }else if(!isYPositive && yVariation <= y_destination){
                         if(isStay) {
@@ -321,6 +306,9 @@ public class X2DObject {
                         if(circle){
                             xVariation = x_offset;//循环
                              yVariation = y_offset;
+                            zoomMultiples = minZoom;
+                                zscale = -20.0f;
+
                         }
                         //
                     }
@@ -337,6 +325,8 @@ public class X2DObject {
                             xVariation = x_offset;//循环
                             yVariation = y_offset;
                             zoomMultiples = minZoom;
+                                zscale = -20.0f;
+
                         }
                         // xVariation = x_offset;
                         //yVariation = y_offset;
@@ -353,6 +343,8 @@ public class X2DObject {
                             xVariation = x_offset;//循环
                             yVariation = y_offset;
                             zoomMultiples = minZoom;
+                                zscale = -20.0f;
+
                         }
                         //xVariation = x_offset;
                         //yVariation = y_offset;
@@ -361,6 +353,27 @@ public class X2DObject {
 
             }
 
+            if(isNeedZoom){
+                if(increase){
+                    if (zoomMultiples <= maxZoom) {
+                        zoomMultiples += (0.005f) *timeUp;
+                        if(issmall && (zoomMultiples>=maxZoom)){
+                            increase = false;
+                        }
+                    }
+                }else{
+                    if (zoomMultiples >= minZoom) {
+                        zoomMultiples -= 0.01f;
+                    }else{
+                        ActionInstance.getInstance().setActionType(true);
+                        isStop = true;
+                    }
+                }
+            }
+
+
+        }else{
+            return;
         }
 
         if(isNeedRote) {
@@ -380,13 +393,13 @@ public class X2DObject {
         modelview.matrixLoadIdentity();
         // Translate away from the viewer
 
-        modelview.translate(xVariation, yVariation, -20.0f);
+        modelview.translate(xVariation, yVariation, zscale);//-20.0f);
 
         // Rotate 暂时关闭
         if(isNeedRote) {
             modelview.rotate(mAngle, 0.0f, 0.0f, 1.0f);
         }
-        modelview.scale(zoomMultiples,zoomMultiples,zoomMultiples);
+        modelview.scale(zoomMultiples,zoomMultiples,0.3f);//zoomMultiples);
 
         // Compute the final MVP by multiplying the
         // modevleiw and perspective matrices together
@@ -405,9 +418,12 @@ public class X2DObject {
         respondEventNum = param;
     }
 
-
-    public boolean getisStartPictureMove(){
-       return isStartPictureMove;
+    private boolean zBoolean = false;
+    public void setZscale(){
+        zBoolean = true;
+    }
+    public void setzSSSS(){
+        zscale = -20f;
     }
 }
 
