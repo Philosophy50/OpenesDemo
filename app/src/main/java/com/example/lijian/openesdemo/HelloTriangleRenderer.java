@@ -80,6 +80,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
    X2DObject mPopWindow,mPopWindowLight,mPopWinodwAtom;
 
    X2DObject mTreeLeft_1,mTreeRight_1,mTreeLeft_2,mTreeRight_2;
+   X2DObject mBackground;
 
    public HelloTriangleRenderer ( Context context )
    {
@@ -149,7 +150,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       return shader;
    }
    int textureR,textureB,textureG,textureP,textureY,programObject2;
-   int textureCity,textureLight,textureAtom,textureTree;
+   int textureCity,textureLight,textureAtom,textureTree,textureBackgound;
    ///
    // Initialize the shader and program object
    //
@@ -202,21 +203,27 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       textureLight = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_rotatinglight.png");
       textureAtom = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_atomization.png");
       textureTree = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_tree.png");
+      textureBackgound = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_bg.png");
 
-      mTreeLeft_1 = new X2DObject(2f,3f,          -3f,-2f,         200f,200f,textureTree,programObject2);
-      mTreeLeft_1.setDestination(-16f,-11f,true);
+      mBackground = new X2DObject(256f,140f,0f,0f,200f,200f,textureBackgound,programObject2);
+      mBackground.setisNeedZoom(false,false,false,false);
+      mBackground. setzSSSS();
+
+      mTreeLeft_1 = new X2DObject(2f,3f,          -4f,-0.5f,         200f,200f,textureTree,programObject2);
+      mTreeLeft_1.setDestination(-14.5f,-4.5f,true);
       mTreeLeft_1.setisNeedZoom(true,true,false,false);
-      mTreeLeft_1.setZoomValue(0.1f,1.3f);
-      mTreeLeft_1.resetZoom(0.3f,true);
+      mTreeLeft_1.setZoomValue(0.1f,2.0f);
+      mTreeLeft_1.resetZoom(0.1f,true);
       mTreeLeft_1.setcircle(true);
+      mTreeLeft_1.setZscale();
 
-      mTreeLeft_2 = new X2DObject(2f,3f,          -1.5f,-1f,         200f,200f,textureTree,programObject2);
-      mTreeLeft_2.setDestination(-14.5f,-10f,true);
+      mTreeLeft_2 = new X2DObject(2f,3f,          5f,-0.5f,         200f,200f,textureTree,programObject2);
+      mTreeLeft_2.setDestination(15.5f,-4.5f,true);
       mTreeLeft_2.setisNeedZoom(true,true,false,false);
-      mTreeLeft_2.setZoomValue(0.1f,1.3f);
-      mTreeLeft_2.resetZoom(0.3f,true);
+      mTreeLeft_2.setZoomValue(0.1f,2.0f);
+      mTreeLeft_2.resetZoom(0.1f,true);
       mTreeLeft_2.setcircle(true);
-
+      mTreeLeft_2.setZscale();
 
 
       x2DObject =   new X2DObject(10f,10f,   -2f,7f,   200f,200f,textureR,programObject2);
@@ -303,6 +310,8 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mBaseMapTexId = loadTextureFromAsset ( "textures/basemap.png" );
       mSecondMapTexId = loadTextureFromAsset ( "textures/lit.png");
       GLES30.glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
+
+      mBackground.setisStartPictureMove(true);
    }
 
    // /
@@ -346,12 +355,13 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
 
 
-
+      mBackground.drawSelf();
+      mTreeLeft_1.drawSelf();
       mTreeLeft_2.drawSelf();
 
-      mTreeLeft_1.drawSelf();
+
       mPopWindowLight.drawSelf();
-      mPopWindow.drawSelf();
+    // mPopWindow.drawSelf();
       mPopWinodwAtom.drawSelf();
 
       x2DObject.drawSelf();
@@ -498,7 +508,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
    public void setStartPictureMove(boolean param){
       switch (touchTime){
          case 0 :
-            x2DObject.setisStartPictureMove(true);
+          //  x2DObject.setisStartPictureMove(true);
             x2DObject1.setisStartPictureMove(true);
             x2DObject2.setisStartPictureMove(true);
             x2DObject3.setisStartPictureMove(true);
