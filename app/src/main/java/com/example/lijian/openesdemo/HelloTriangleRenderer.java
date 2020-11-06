@@ -80,7 +80,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
    X2DObject mPopWindow,mPopWindowLight,mPopWinodwAtom;
 
    X2DObject mTreeLeft_1,mTreeRight_1,mTreeLeft_2,mTreeRight_2;
-   X2DObject mBackground;
+   X2DObject mBackground,mProgressBar,mProgressNum1,mProgressNum2;
 
    public HelloTriangleRenderer ( Context context )
    {
@@ -150,7 +150,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       return shader;
    }
    int textureR,textureB,textureG,textureP,textureY,programObject2;
-   int textureCity,textureLight,textureAtom,textureTree,textureBackgound;
+   int textureCity,textureLight,textureAtom,textureTree,textureBackgound,textureBar;
    ///
    // Initialize the shader and program object
    //
@@ -204,59 +204,81 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       textureAtom = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_atomization.png");
       textureTree = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_tree.png");
       textureBackgound = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_bg.png");
+      textureBar= ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_progressbar.png");
 
       mBackground = new X2DObject(256f,140f,0f,0f,200f,200f,textureBackgound,programObject2);
       mBackground.setisNeedZoom(false,false,false,false);
       mBackground. setzSSSS();
+
+      mProgressBar = new X2DObject(56f,10f,  12f,10f, 200f,200f,textureBar,programObject2);
+      mProgressBar.setisNeedZoom(false,false,false,false);
+      mProgressBar. setzSSSS();
+
+
 
       mTreeLeft_1 = new X2DObject(2f,3f,          -4f,-0.5f,         200f,200f,textureTree,programObject2);
       mTreeLeft_1.setDestination(-14.5f,-4.5f,true);
       mTreeLeft_1.setisNeedZoom(true,true,false,false);
       mTreeLeft_1.setZoomValue(0.1f,2.0f);
       mTreeLeft_1.resetZoom(0.1f,true);
-      mTreeLeft_1.setcircle(true);
-      mTreeLeft_1.setZscale();
+      mTreeLeft_1.setLoop(true);
+      mTreeLeft_1.setZscale(20.0f,4.5f);
 
       mTreeLeft_2 = new X2DObject(2f,3f,          5f,-0.5f,         200f,200f,textureTree,programObject2);
       mTreeLeft_2.setDestination(15.5f,-4.5f,true);
       mTreeLeft_2.setisNeedZoom(true,true,false,false);
       mTreeLeft_2.setZoomValue(0.1f,2.0f);
       mTreeLeft_2.resetZoom(0.1f,true);
-      mTreeLeft_2.setcircle(true);
-      mTreeLeft_2.setZscale();
+      mTreeLeft_2.setLoop(true);
+      mTreeLeft_2.setZscale(20.0f,4.5f);
 
 
       x2DObject =   new X2DObject(10f,10f,   -2f,7f,   200f,200f,textureR,programObject2);
-      x2DObject.setDestination(2f,5f,false);
+      x2DObject.setDestination(7f,10f,false);
+      x2DObject.setTimeUp(9f);
       x2DObject.setRespondEvent(1);
       x2DObject1=  new X2DObject (4f,4f,     -2f,-4f,  200f,200f,textureB,programObject2);
-      x2DObject1.setDestination(2f,5f,false);
+      x2DObject1.setDestination(7f,10f,false);
       x2DObject1.setRespondEvent(1);
+      x2DObject1.setTimeUp(9f);
       x2DObject2 = new X2DObject(5f,5f,      2f,8f,         200f,200f,textureG,programObject2);
-      x2DObject2.setDestination(2f,5f,false);
+      x2DObject2.setDestination(7f,10f,false);
       x2DObject2.setRespondEvent(1);
+      x2DObject2.setTimeUp(9f);
+
       x2DObject3  = new X2DObject(5f,5f,     2f,0f,         200f,200f,textureLight,programObject2);
       x2DObject3.setRespondEvent(1);
-      x2DObject3.setDestination(2f,5f,false);
+      x2DObject3.setDestination(7f,10f,false);
+      x2DObject3.setTimeUp(9f);
+
       x2Dobject4  = new X2DObject(5f,5f      ,5f,5f,         200f,200f,textureY,programObject2);
-      x2Dobject4.setDestination(2f,5f,false);
+      x2Dobject4.setDestination(7f,10f,false);
       x2Dobject4.setRespondEvent(1);
+      x2Dobject4.setTimeUp(9f);
+
       x2Dobject5  = new X2DObject(5f,5f,     -5f,5f,         200f,200f,textureR,programObject2);
-      x2Dobject5.setDestination(2f,5f,false);
+      x2Dobject5.setDestination(7f,10f,false);
       x2Dobject5.setRespondEvent(1);
+      x2Dobject5.setTimeUp(9f);
+
       x2Dobject6  = new X2DObject(5f,5f,     -1f,-1f,         200f,200f,textureB,programObject2);
-      x2Dobject6.setDestination(2f,5f,false);
+      x2Dobject6.setDestination(7f,10f,false);
       x2Dobject6.setRespondEvent(1);
+      x2Dobject6.setTimeUp(9f);
 
       mPopWindow = new X2DObject(7f,7f,  0f,-2f ,    200f,200f, textureCity,programObject2);
-      mPopWindow.setDestination(0f,-10,true);
+      mPopWindow.setDestination(0f,-7f,true);
+      mPopWindow.setZoomValue(0.1f,0.5f);
       mPopWindow.setisNeedZoom(true,true,false,false);
+      mPopWindow.setZscale(15.0f,1.0f,-19.0f);
+
+
 
       mPopWindowLight = new  X2DObject(8f,8f,  0f,0f ,    200f,200f, textureLight,programObject2);
       mPopWindowLight.setisNeedZoom(true,false,false,false);
       mPopWindowLight.manualStop(true);
 
-      mPopWinodwAtom = new X2DObject(4f,4f,  0f,0f, 200f,200f, textureAtom,programObject2);
+      mPopWinodwAtom = new X2DObject(12f,12f,  0f,0f, 200f,200f, textureAtom,programObject2);
       mPopWinodwAtom.setisNeedZoom(true,false,false,false);
       mPopWinodwAtom.manualStop(true);
 
@@ -312,6 +334,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       GLES30.glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
 
       mBackground.setisStartPictureMove(true);
+      mProgressBar.setisStartPictureMove(true);
    }
 
    // /
@@ -356,12 +379,13 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
 
       mBackground.drawSelf();
-      mTreeLeft_1.drawSelf();
-      mTreeLeft_2.drawSelf();
+      mProgressBar.drawSelf();
+     mTreeLeft_1.drawSelf();
+     mTreeLeft_2.drawSelf();
 
 
       mPopWindowLight.drawSelf();
-    // mPopWindow.drawSelf();
+     mPopWindow.drawSelf();
       mPopWinodwAtom.drawSelf();
 
       x2DObject.drawSelf();
@@ -525,6 +549,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             touchTime++;
             break;
          case 1:
+            mPopWindow . setzSSSS();
             mPopWindow.modifyOffset(0f,0f);
             mPopWindow.setDestination(0f,0f,true);
             mPopWindow.resetZoom(0.1f,true);
@@ -536,7 +561,8 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             mPopWindowLight.resetZoom(0.1f,true);
             mPopWindowLight.setZoomValue(0.1f,0.7f);
 
-
+            mTreeLeft_1.setTimeUp(18f);
+            mTreeLeft_2.setTimeUp(18f);
 
 
             touchTime++;
@@ -545,21 +571,26 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             //mPopWindow.setTexture(textureCity);
             mPopWindow.setDestination(0f,0f,false);
             mPopWindow.setisNeedZoom(true,false,false,true);
-            mPopWindow.setisBig(false);
-
+            mPopWindow.setAlphaUp(false);
             mPopWindow.setZoomValue(0.1f,0.625f);
-
             mPopWindow.setsmall(true);
             mPopWindow.resetZoom(0.5f,true);
-
+            mPopWindow.setAlphaValue(0.1f,1.1f);
 
 
 
             mPopWinodwAtom.manualStop(false);
             mPopWinodwAtom.setDestination(0f,0f,false);
             mPopWinodwAtom. resetZoom(0.5f,false);
-            mPopWinodwAtom.setisNeedZoom(false,false,false,true);
-            mPopWinodwAtom.setisBig(true);
+            mPopWinodwAtom.setisNeedZoom(true,false,false,true);
+            mPopWinodwAtom.setAlphaUp(true);
+            mPopWinodwAtom.setAlphaValue(0.1f,0.8f);
+
+
+
+
+            mTreeLeft_1.setTimeUp(4f);
+            mTreeLeft_2.setTimeUp(4f);
             break;
 
       }
