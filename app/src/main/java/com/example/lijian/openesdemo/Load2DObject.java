@@ -3,7 +3,6 @@ package com.example.lijian.openesdemo;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.example.lijian.openesdemo.ESUtils.ESTransform;
 
@@ -12,11 +11,10 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 /**
- * Created by lijian on 2020/10/28.
- *
+ * Created by lijian on 2020/11/10.
  */
 
-public class X2DObject {
+public class Load2DObject {
     private FloatBuffer mVertexBuffer;                 //顶点坐标数据缓冲
     private FloatBuffer mTexCoorBuffer;                //纹理坐标数据缓冲
     private ESTransform mMVPMatrix = new ESTransform();//矩阵变换
@@ -26,10 +24,10 @@ public class X2DObject {
     private int mTextureId;                 //纹理id
     private int mProgramId;                 //渲染程序Id
     private int apttId;                   //透明度句柄Id
-
+    private int xHandle;
     private boolean isInitShader = false;  //判断是否初始化过两个着色器
 
-
+    private boolean isStartPictureMove = false;              //是否开启图片移动
 
     private float x;                        //图片的  1/2  x长度
     private float y;                        //图片的  1/2  y长度
@@ -38,50 +36,34 @@ public class X2DObject {
     private float x_destination = 0f;       //终点中心的x坐标
     private float y_destination = 0f;       //终点中心的y坐标
     private boolean isXPositive,isYPositive;//   图片向X、Y轴的移动方向
-    
-    
-    private boolean isStay;                                  //图片结束移动是否保留
-    private boolean isStartPictureMove = false;              //是否开启图片移动
-    private boolean zBoolean = false;                        //是否Z轴移动
-    private float zDistance = 20.0f;                        //z轴变化距离
-    private float zVariation=-20f;                           /**当前z轴值*/
-    private float zMax = 0.0f;                              //z轴的最高值
-    private boolean isZoomUp = true;                         //图片放大or缩小
-    private float minZoom = 0.1f,   maxZoom = 0.5f;          //Max、Min缩放倍数
-    private float zoomMultiples = 0.1f;                      /**当前缩放值*/
-    private boolean isAlphaUp = true;                        //透明度增加or减小
-    private float   alphaMin = 0.1f,alphaMax = 1.1f;         //Max、Min透明度
-    private boolean isLoop = false;                          //图片循环播放
-    private boolean isNeedZoom = false,isNeedMove = true,isNeedRote = false,isNeedAlpha = false;
-                                                            //是否开启缩放、移动、旋转、更改透明度
-     private float timeUp = 4.5f*1.0f;                       /**这个就是 跑步的速度，修改*后面的值**/
-
-
-    private boolean needRespond = false;
-    private int respondEventNum = -1;                       //单例的响应项
-
     private long  mLastTime = 0;
     private float mAngle = 0.0f;        //旋转角度
     private float xVariation = 0.0f;   //x轴移动量
     private float yVariation = 0.0f;   //y轴移动量
-
-
-    private boolean issmall = false;
-
+    private float zVariation=-20f;                           /**当前z轴值*/
+    private float  changeAlpha = 1.0f;
+    private boolean isStop=false;
+    private boolean needRespond = false;
+    private int respondEventNum = -1;                       //单例的响应项
+    private boolean isNeedZoom = false,isNeedMove = true,isNeedRote = false,isNeedAlpha = false;
+    //是否开启缩放、移动、旋转、更改透明度
     private final float moveRate = 500;           //调试用移动快慢的值
 
-    /**
-     *
-     * @param x         图片的  1/2  x长度
-     * @param y         图片的  1/2  y长度
-     * @param x_offset  起点中心的x坐标，即图片的x偏移量
-     * @param y_offset  起点中心的y坐标，即图片的y偏移量
-     * @param picWidth  暂时不用，计划用来确定图片大小与屏幕的比例
-     * @param picHeight 暂时不用，计划用来确定图片大小与屏幕的比例
-     * @param texure    纹理id
-     * @param programId 管线程序id
-     */
-    public X2DObject(float x , float y ,float x_offset,float y_offset,float picWidth,float picHeight,int texure,int programId){
+    private boolean isStay;                                  //图片结束移动是否保留
+    boolean pramA = false;
+    private boolean isZoomUp = true;                         //图片放大or缩小
+    private float minZoom = 0.1f,   maxZoom = 0.5f;          //Max、Min缩放倍数
+    private float zoomMultiples = 0.1f;                      /**当前缩放值*/
+    private float timeUp = 4.5f*1.0f;                       /**这个就是 跑步的速度，修改*后面的值**/
+    private boolean isAlphaUp = true;                        //透明度增加or减小
+    private float   alphaMin = 0.1f,alphaMax = 1.1f;         //Max、Min透明度
+    private boolean zBoolean = false;                        //是否Z轴移动
+    private float zDistance = 20.0f;                        //z轴变化距离
+    private boolean isLoop = false;                          //图片循环播放
+    private boolean issmall = false;
+    private float zMax = 0.0f;                              //z轴的最高值
+
+    public Load2DObject(float x , float y ,float x_offset,float y_offset,float picWidth,float picHeight,int texure,int programId){
         this.x = x;
         this.y = y;
         this.x_offset = x_offset;
@@ -93,46 +75,18 @@ public class X2DObject {
         initVertex(picWidth,picHeight);
     }
 
-
-    public  void setTexture(int param){
-        mTextureId = param;
-    }
-
-
-    public void modifyOffset(float x_newOffset,float y_newOffset){
-        x_offset = x_newOffset;
-        y_offset = y_newOffset;
-    }
-    /**
-     * 设置终点坐标
-     * @param x_destination  x轴终点坐标
-     * @param y_destination  y轴终点坐标
-     */
-    public void setDestination(float x_destination,float y_destination,boolean isStay){
-        this.x_destination = x_destination;
-        this.y_destination = y_destination;
-        this.isStay = isStay;
-        isXPositive = (this.x_destination - x_offset )>0 ;
-        isYPositive = (this.y_destination - y_offset )>0;
-    }
-
-    /**
-     * 初始化顶点数据，放入Buffer
-     * @param picWidth  暂时不用
-     * @param picHeight 暂时不用
-     */
     private void initVertex(float picWidth,float picHeight){
         picWidth = picWidth*2/1024;
         picHeight = picHeight*2/600;
 
         float vertex[] = new float[]
-        {       -x,  y, 0.0f,
-                -x, -y, 0.0f,
-                 x, -y, 0.0f,
-                 x, -y, 0.0f,
-                -x,  y, 0.0f,
-                 x,  y, 0.0f
-        };
+                {       -x,  y, 0.0f,
+                        -x, -y, 0.0f,
+                        x, -y, 0.0f,
+                        x, -y, 0.0f,
+                        -x,  y, 0.0f,
+                        x,  y, 0.0f
+                };
 
         mVertexBuffer = ByteBuffer.allocateDirect ( vertex.length * 4 )  //开辟对应容量的缓冲空间
                 .order ( ByteOrder.nativeOrder() )                     //设置字节顺序为本地操作系统顺序
@@ -154,29 +108,33 @@ public class X2DObject {
 
     }
 
-    
-
-    /**
-     * 初始化着色器，获得句柄
-     */
     private void initShader() {//初始化着色器
 
         mVertexPositionIndexId = GLES30.glGetAttribLocation(mProgramId, "vPosition");//获取VertexShader里的顶点位置
         mTexCoorIndexId = GLES30.glGetAttribLocation(mProgramId, "vTexCoor");//获取VertexShader里的纹理位置
         mMVPMatrixIndexId = GLES30.glGetUniformLocation(mProgramId, "uMVPMatrix");//获取VertexShader里的uniform变换矩阵
         apttId = GLES30.glGetUniformLocation(mProgramId,"aptt");
+        xHandle=GLES30.glGetUniformLocation(mProgramId, "xPosition");//
+
         isInitShader = true;//初始化着色器完毕
     }
-    private boolean isStop=false;
-    private float  changeAlpha = 1.0f;
 
-    public void manualStop(boolean param){
-        isStop = param;
+    public void setisNeedZoom(boolean isZoom,boolean isMove,boolean isRote,boolean isAlpha){
+        isNeedZoom = isZoom;
+        isNeedMove = isMove;
+        isNeedRote = isRote;
+        isNeedAlpha = isAlpha;
     }
 
-    public boolean getStopState(){
-        return isStop;
+    public void setzSSSS(){
+        zVariation = -20f;
     }
+
+    public void setisStartPictureMove(boolean param){
+        isStartPictureMove = param;
+    }
+
+
     public void drawSelf(){
         if(isStop){
             return;
@@ -203,52 +161,28 @@ public class X2DObject {
         GLES30.glBindTexture(GLES20.GL_TEXTURE_2D,mTextureId);   //绑定纹理图片
 
         GLES30.glUniform1f(apttId,changeAlpha);
+        GLES30.glUniform1f(xHandle,testfloat);
+
+
         GLES30.glUniformMatrix4fv ( mMVPMatrixIndexId, 1, false, mMVPMatrix.getAsFloatBuffer() );
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_STRIP, 0, 6);//6 画顶点数量
 
         GLES30.glDisable(GLES30.GL_BLEND);
 
     }
+    float singlefloat = 7.0f/100.0f;
+    float testfloat =9f;// 6250.0f;
 
-
-    public void setisNeedZoom(boolean isZoom,boolean isMove,boolean isRote,boolean isAlpha){
-        isNeedZoom = isZoom;
-        isNeedMove = isMove;
-        isNeedRote = isRote;
-        isNeedAlpha = isAlpha;
+    public void setpercent(float param){
+        if(testfloat>= 16){
+            testfloat =9f;
+        }
+        testfloat =testfloat + singlefloat *10f ;//+9f;
     }
 
-
-    public void resetZoom(float paramf,boolean isZoomUp){
-        zoomMultiples = paramf;
-        this.isZoomUp = isZoomUp;
+    public void setParamA(){
+        pramA = true;
     }
-
-    public void setZoomValue (float minZoom, float maxZoom){
-         this.minZoom = minZoom;
-        this.maxZoom = maxZoom;
-    }
-
-    public void setAlphaUp(boolean param){
-        changeAlpha = ((isAlphaUp = param  )? alphaMin:alphaMax);
-        Log.w("test_wl","111");
-    }
-
-    public void setAlphaValue(float minParam ,float maxParam){
-        alphaMin = minParam;
-        alphaMax = maxParam;
-    }
-
-
-
-    public void setsmall(boolean param){
-        issmall = param;
-    }
-
-    public void setLoop(boolean param){
-        isLoop = param;
-    }
-
     private void update()   //计算矩阵
     {
         if ( mLastTime == 0 )
@@ -272,14 +206,14 @@ public class X2DObject {
 
             if(isNeedAlpha) {
 
-                 if (isAlphaUp  ) {
+                if (isAlphaUp  ) {
                     if(changeAlpha<alphaMax) {
                         changeAlpha += 0.01f;
                     }
-                 } else {
-                     if(changeAlpha>alphaMin )
-                         changeAlpha -= 0.01f;
-                 }
+                } else {
+                    if(changeAlpha>alphaMin )
+                        changeAlpha -= 0.01f;
+                }
             }
 
             if(isNeedMove) {
@@ -287,9 +221,9 @@ public class X2DObject {
                 yVariation +=   (y_destination-y_offset)/(moveRate)   *timeUp;
                 if(zBoolean) {
 
-                        if(zVariation<=zMax) {
-                            zVariation += (zDistance / ((moveRate) * 1.78)) * timeUp;
-                        }
+                    if(zVariation<=zMax) {
+                        zVariation += (zDistance / ((moveRate) * 1.78)) * timeUp;
+                    }
 
                 }
 
@@ -307,7 +241,7 @@ public class X2DObject {
                             xVariation = x_offset;  //循环
                             yVariation = y_offset;
                             zoomMultiples = minZoom;
-                                zVariation = -20.0f;
+                            zVariation = -20.0f;
 
                         }
                     }else if(!isYPositive && yVariation <= y_destination){
@@ -320,9 +254,9 @@ public class X2DObject {
 
                         if(isLoop){
                             xVariation = x_offset;//循环
-                             yVariation = y_offset;
+                            yVariation = y_offset;
                             zoomMultiples = minZoom;
-                                zVariation = -20.0f;
+                            zVariation = -20.0f;
 
                         }
                         //
@@ -340,7 +274,7 @@ public class X2DObject {
                             xVariation = x_offset;//循环
                             yVariation = y_offset;
                             zoomMultiples = minZoom;
-                                zVariation = -20.0f;
+                            zVariation = -20.0f;
 
                         }
                         // xVariation = x_offset;
@@ -358,7 +292,7 @@ public class X2DObject {
                             xVariation = x_offset;//循环
                             yVariation = y_offset;
                             zoomMultiples = minZoom;
-                                zVariation = -20.0f;
+                            zVariation = -20.0f;
 
                         }
                         //xVariation = x_offset;
@@ -416,7 +350,7 @@ public class X2DObject {
         }
 
         if(pramA) {
-            modelview.scale(0.05f, 0.1f, 0.3f);
+            modelview.scale(0.1f, 0.1f, 0.3f);
         }else{
             modelview.scale(zoomMultiples,zoomMultiples,0.3f);//0.3f);//zoomMultiples);
         }
@@ -425,40 +359,5 @@ public class X2DObject {
         mMVPMatrix.matrixMultiply ( modelview.get(), perspective.get());
     }
 
-    public void setisStartPictureMove(boolean param){
-        isStartPictureMove = param;
-    }
 
-    boolean pramA = false;
-    public void setParamA(){
-        pramA = true;
-    }
-
-    public void setRespondEvent(int param){
-        needRespond = true;
-        respondEventNum = param;
-    }
-
-
-    public void setZscale(float zDis,float timeup){
-        zDistance = zDis;
-        zBoolean = true;
-        timeUp = timeup;
-    }
-
-    public void setTimeUp(float param){
-        timeUp = param;
-    }
-
-    public void setZscale(float zDis,float timeup,float Zmax){
-        zDistance = zDis;
-        zBoolean = true;
-        timeUp = timeup;
-        zMax = Zmax;
-    }
-    public void setzSSSS(){
-        zVariation = -20f;
-    }
 }
-
-

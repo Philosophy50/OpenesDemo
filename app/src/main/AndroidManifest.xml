@@ -11,16 +11,16 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".HelloTriangle">
-
-
-        </activity>
-
-        <activity android:name=".ParticleSystem">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+
+        <activity android:name=".ParticleSystem">
+
 
         </activity>
     </application>

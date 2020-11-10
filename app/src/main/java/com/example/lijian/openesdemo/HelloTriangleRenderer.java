@@ -81,6 +81,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
    X2DObject mTreeLeft_1,mTreeRight_1,mTreeLeft_2,mTreeRight_2;
    X2DObject mBackground,mProgressBar,mProgressNum1,mProgressNum2;
+   Load2DObject mProgress;
 
    public HelloTriangleRenderer ( Context context )
    {
@@ -149,8 +150,8 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       }
       return shader;
    }
-   int textureR,textureB,textureG,textureP,textureY,programObject2;
-   int textureCity,textureLight,textureAtom,textureTree,textureBackgound,textureBar;
+   int textureR,textureB,textureG,textureP,textureY,programObject2,programLoadingObject;
+   int textureCity,textureLight,textureAtom,textureTree,textureBackgound,textureBar,textureProgress;
    ///
    // Initialize the shader and program object
    //
@@ -194,6 +195,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
 
       programObject2 =  ESShader.loadProgramFromAsset(mContext,"shaders/vertex_2d.sh", "shaders/frag_2d.sh");
+      programLoadingObject = ESShader.loadProgramFromAsset(mContext,"shaders/vertex_load2d.sh","shaders/frag_load2d.sh");
       textureR = ESShader.loadTextureFromAsset(mContext,"textures/circle_red.png");
       textureB = ESShader.loadTextureFromAsset(mContext,"textures/circle_blue.png");
       textureG  = ESShader.loadTextureFromAsset(mContext,"textures/circle_green.png");
@@ -205,6 +207,8 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       textureTree = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_tree.png");
       textureBackgound = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_bg.png");
       textureBar= ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_progressbar.png");
+      textureProgress = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_bar.png");
+
 
       mBackground = new X2DObject(256f,140f,0f,0f,200f,200f,textureBackgound,programObject2);
       mBackground.setisNeedZoom(false,false,false,false);
@@ -214,7 +218,10 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mProgressBar.setisNeedZoom(false,false,false,false);
       mProgressBar. setzSSSS();
 
-
+      mProgress = new Load2DObject(32f,2f,  12f,10f, 200f,200f,textureProgress,programLoadingObject);
+      mProgress.setisNeedZoom(false,false,false,false);
+      mProgress. setzSSSS();
+      mProgress.setParamA();
 
       mTreeLeft_1 = new X2DObject(2f,3f,          -4f,-0.5f,         200f,200f,textureTree,programObject2);
       mTreeLeft_1.setDestination(-14.5f,-4.5f,true);
@@ -335,6 +342,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
       mBackground.setisStartPictureMove(true);
       mProgressBar.setisStartPictureMove(true);
+      mProgress.setisStartPictureMove(true);
    }
 
    // /
@@ -380,12 +388,13 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
       mBackground.drawSelf();
       mProgressBar.drawSelf();
-     mTreeLeft_1.drawSelf();
-     mTreeLeft_2.drawSelf();
+      mProgress.drawSelf();
+      mTreeLeft_1.drawSelf();
+      mTreeLeft_2.drawSelf();
 
 
       mPopWindowLight.drawSelf();
-     mPopWindow.drawSelf();
+      mPopWindow.drawSelf();
       mPopWinodwAtom.drawSelf();
 
       x2DObject.drawSelf();
@@ -564,7 +573,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             mTreeLeft_1.setTimeUp(18f);
             mTreeLeft_2.setTimeUp(18f);
 
-
+            mProgress.setpercent(25);
             touchTime++;
             break;
          case 2:
@@ -587,10 +596,13 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             mPopWinodwAtom.setAlphaValue(0.1f,0.8f);
 
 
-
+            mProgress.setpercent(75);
 
             mTreeLeft_1.setTimeUp(4f);
             mTreeLeft_2.setTimeUp(4f);
+            break;
+         default:
+            mProgress.setpercent(75);
             break;
 
       }
