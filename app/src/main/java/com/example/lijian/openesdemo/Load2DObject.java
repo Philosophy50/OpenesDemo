@@ -25,6 +25,9 @@ public class Load2DObject {
     private int mProgramId;                 //渲染程序Id
     private int apttId;                   //透明度句柄Id
     private int xHandle;
+    private int x2Handle;
+
+
     private boolean isInitShader = false;  //判断是否初始化过两个着色器
 
     private boolean isStartPictureMove = false;              //是否开启图片移动
@@ -115,7 +118,7 @@ public class Load2DObject {
         mMVPMatrixIndexId = GLES30.glGetUniformLocation(mProgramId, "uMVPMatrix");//获取VertexShader里的uniform变换矩阵
         apttId = GLES30.glGetUniformLocation(mProgramId,"aptt");
         xHandle=GLES30.glGetUniformLocation(mProgramId, "xPosition");//
-
+        x2Handle =GLES30.glGetUniformLocation(mProgramId, "x2Position");//
         isInitShader = true;//初始化着色器完毕
     }
 
@@ -162,6 +165,7 @@ public class Load2DObject {
 
         GLES30.glUniform1f(apttId,changeAlpha);
         GLES30.glUniform1f(xHandle,testfloat);
+        GLES30.glUniform1f(x2Handle,startfloat);
 
 
         GLES30.glUniformMatrix4fv ( mMVPMatrixIndexId, 1, false, mMVPMatrix.getAsFloatBuffer() );
@@ -171,11 +175,14 @@ public class Load2DObject {
 
     }
     float singlefloat = 7.0f/100.0f;
-    float testfloat =9f;// 6250.0f;
+    float startfloat = -7f;
+    float testfloat =startfloat;//9f;
+
+    float endfloat = startfloat + singlefloat*100;
 
     public void setpercent(float param){
-        if(testfloat>= 16){
-            testfloat =9f;
+        if(testfloat>= endfloat){
+            testfloat = startfloat;//9f;   //这个是x min
         }
         testfloat =testfloat + singlefloat *10f ;//+9f;
     }

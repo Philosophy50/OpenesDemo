@@ -351,6 +351,7 @@ public class ESShader
       return textureId[0];
    }
 
+
    public static int loadTextureFromAssetAlpha ( Context mContext,String fileName )
    {
       int[] textureId = new int[1];
@@ -375,6 +376,27 @@ public class ESShader
       options.inPremultiplied = false;
 
       bitmap = BitmapFactory.decodeStream ( is ,null,options);
+
+      GLES30.glGenTextures ( 1, textureId, 0 );
+      GLES30.glBindTexture ( GLES30.GL_TEXTURE_2D, textureId[0] );
+
+      GLUtils.texImage2D ( GLES30.GL_TEXTURE_2D, 0, bitmap, 0 );
+
+      GLES30.glTexParameteri ( GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR );
+      GLES30.glTexParameteri ( GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR );
+      GLES30.glTexParameteri ( GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_CLAMP_TO_EDGE );
+      GLES30.glTexParameteri ( GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_CLAMP_TO_EDGE );
+
+      bitmap.recycle();//释放图像资源
+      return textureId[0];
+   }
+
+
+   public static int loadTextureFromBitmap ( Context mContext,Bitmap bitMap )
+   {
+      int[] textureId = new int[1];
+      Bitmap bitmap = bitMap;
+
 
       GLES30.glGenTextures ( 1, textureId, 0 );
       GLES30.glBindTexture ( GLES30.GL_TEXTURE_2D, textureId[0] );
