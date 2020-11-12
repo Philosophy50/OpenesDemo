@@ -350,6 +350,14 @@ public class X2DObject {
                         if(isStay) {
                             xVariation = x_destination;
                             yVariation = y_destination;
+
+                            if(rewardend){
+                                resetZoom(0.5f,false);
+                                minZoom = 0.45f;
+                                rewardend = false;
+                                rewardtime ++;
+                            }
+
                         }else{
                             isStop = true;
                         }
@@ -376,13 +384,31 @@ public class X2DObject {
                             isZoomUp = false;
                         }
                     }
+
+                    if(rewardtime>0){
+                        resetZoom(0.5f,false);
+                        minZoom = 0.45f;
+                        rewardtime++;
+                    }
                 }else{
                     if (zoomMultiples >= minZoom) {
                         zoomMultiples -= 0.01f;
                     }else{
-                        ActionInstance.getInstance().setActionType(true);
-                        isStop = true;
+
+                        if(rewardtime >0 && rewardtime <4){
+                            resetZoom(0.45f,true);
+                            maxZoom = 0.5f;
+                        }else if(rewardtime>= 4) {
+                            minZoom = 0.001f;
+                            rewardtime = 0;
+                        }else{
+                                ActionInstance.getInstance().setActionType(true);
+                                isStop = true;
+
+                        }
                     }
+
+
                 }
             }
 
@@ -458,6 +484,13 @@ public class X2DObject {
     }
     public void setzSSSS(){
         zVariation = -20f;
+    }
+
+    private boolean rewardend = false;
+    private int rewardtime = 0;
+
+    public void setRewardEnd(){
+        rewardend = true;
     }
 }
 

@@ -73,21 +73,23 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
       {
          // Lifetime of particle
          mParticleData[i + 0] = ( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 10000.0f );;
-
          // 结束 position of particle
-         mParticleData[i + 1] = Math.random()>0.5f?-(float) Math.random(): (float) Math.random();;//( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 5000.0f ) - 1.0f;
-         mParticleData[i + 2] = (float) Math.random();//( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 5000.0f ) - 1.0f;
-
-         mParticleData[i + 3] =0.0f;// ( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 5000.0f ) - 1.0f;
-
+         mParticleData[i + 1] = Math.random()>0.5f?-(float) Math.random(): (float) Math.random();;
+         mParticleData[i + 2] = (float) Math.random();
+         mParticleData[i + 3] =0.0f;
          if(Math.abs(mParticleData[i + 2]) < Math.pow(Math.abs(mParticleData[i + 1] ),0.8)){
             mParticleData[i + 2] = (float) Math.pow(Math.abs(mParticleData[i + 1] ),0.5);
          }
-
          // 开始 position of particle
          mParticleData[i + 4] = 0.0f;//( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 40000.0f ) - 0.125f;
          mParticleData[i + 5] = 0.0f;//( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 40000.0f ) - 0.125f;
          mParticleData[i + 6] = 0.0f;//( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 40000.0f ) - 0.125f;
+
+
+         mParticleData[i+7] = (float) Math.random();
+         mParticleData[i+8] = (float) Math.random();
+         mParticleData[i+9] = (float) Math.random();
+
       }
 
       mParticles = ByteBuffer.allocateDirect ( mParticleData.length * 4 )
@@ -101,7 +103,6 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
    private int loadTextureFromAsset ( String fileName )
    {
       int[] textureId = new int[1];
-      Bitmap bitmap = null;
       InputStream is = null;
 
       try
@@ -118,7 +119,7 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
          return 0;
       }
 
-      bitmap = BitmapFactory.decodeStream ( is );
+      Bitmap bitmap = BitmapFactory.decodeStream ( is );
 
       GLES30.glGenTextures ( 1, textureId, 0 );
       GLES30.glBindTexture ( GLES30.GL_TEXTURE_2D, textureId[0] );
@@ -145,6 +146,10 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
          "layout(location = 0) in float a_lifetime;            \n" +
          "layout(location = 1) in vec3 a_startPosition;        \n" +
          "layout(location = 2) in vec3 a_endPosition;          \n" +
+
+          "layout(location = 3) in vec3 a_colorPosition;          \n" +
+         "out vec3 v_colorPosition; \n"+
+
          "out float v_lifetime;                                \n" +
          "void main()                                          \n" +
          "{                                                    \n" +
@@ -158,28 +163,35 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
          "  }                                                  \n" +
          "  else                                               \n" +
          "     gl_Position = vec4( -1000, -1000, 0, 0 );       \n" +
-
-
-
+         "v_colorPosition = a_colorPosition; \n"+
 
 
          "  v_lifetime = 1.0 - ( u_time / a_lifetime );        \n" +
-         "  v_lifetime = clamp ( v_lifetime, 0.0, 1.0 );       \n" +
-         "  gl_PointSize = ( v_lifetime * v_lifetime ) * 40.0; \n" +
+         "  v_lifetime = clamp ( v_lifetime, 0.0, 1.0 );       \n" + //clamp区间限定函数
+         "  gl_PointSize = ( v_lifetime * v_lifetime ) * 10.0; \n" +  //粒子大小跟 粒子生命时间挂钩
          "}                                                    \n";
 
       String fShaderStr =
          "#version 300 es                                      \n" +
          "precision mediump float;                             \n" +
          "uniform vec4 u_color;                                \n" +
+          "uniform float s_random;                              \n"+
          "in float v_lifetime;                                 \n" +
+          "in vec3 v_colorPosition;                                 \n" +
+
          "layout(location = 0) out vec4 fragColor;             \n" +
          "uniform sampler2D s_texture;                         \n" +
          "void main()                                          \n" +
          "{                                                    \n" +
          "  vec4 texColor;                                     \n" +
          "  texColor = texture( s_texture, gl_PointCoord );    \n" +
-         "  fragColor = vec4( u_color ) * texColor;            \n" +
+
+                "texColor.r = texColor.r + v_colorPosition.r;\n" +
+                 "texColor.r = texColor.g + v_colorPosition.g;\n" +
+                 "texColor.r = texColor.b + v_colorPosition.b;\n" +
+                 "  fragColor = texColor;            \n" +
+
+//        "  fragColor = vec4( u_color ) * texColor;            \n" +
          "  fragColor.a *= v_lifetime;                         \n" +
          "}                                                    \n";
 
@@ -190,7 +202,7 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
       mTimeLoc = GLES30.glGetUniformLocation ( mProgramObject, "u_time" );
       mColorLoc = GLES30.glGetUniformLocation ( mProgramObject, "u_color" );
       mSamplerLoc = GLES30.glGetUniformLocation ( mProgramObject, "s_texture" );
-
+      mRandomLoc = GLES30.glGetUniformLocation ( mProgramObject, "s_random" );
       GLES30.glClearColor ( 0.0f, 0.0f, 0.0f, 0.0f );
 
       // Load the texture images from 'assets'
@@ -223,14 +235,14 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
 
          mTime = 0.0f;
 
-         color[0] = 1.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
-         color[1] = 1.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
-         color[2] = 0.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
-         color[3] = 1.0f;
+         color[0] = (float) Math.random();// 1.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
+         color[1] =(float) Math.random();//  1.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
+         color[2] =(float) Math.random();//  0.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
+         color[3] =  1.0f;
 
          GLES30.glUniform4f ( mColorLoc, color[0], color[1], color[2], color[3] );
       }
-
+      GLES30.glUniform1f( mRandomLoc, (float) Math.random());
       // Load uniform time variable
       GLES30.glUniform1f ( mTimeLoc, mTime );
    }
@@ -253,6 +265,20 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
 
       // Load the vertex attributes
       //[0]
+
+      for ( int i = 0; i < ( NUM_PARTICLES * PARTICLE_SIZE ); i += PARTICLE_SIZE )
+      {
+
+         mParticleData[i+7] = (float) Math.random();
+         mParticleData[i+8] = (float) Math.random();
+         mParticleData[i+9] = (float) Math.random();
+
+      }
+
+      mParticles = ByteBuffer.allocateDirect ( mParticleData.length * 4 )
+              .order ( ByteOrder.nativeOrder() ).asFloatBuffer();
+      mParticles.put ( mParticleData ).position ( 0 );
+
       mParticles.position ( 0 );
       GLES30.glVertexAttribPointer ( ATTRIBUTE_LIFETIME_LOCATION, 1, GLES30.GL_FLOAT,
                                      false, PARTICLE_SIZE * ( 4 ),
@@ -271,9 +297,18 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
                                      mParticles );
 
 
+      mParticles.position(7);
+      GLES30.glVertexAttribPointer ( ATTRIBUTE_COLOR_LOCATION, 3, GLES30.GL_FLOAT,
+                                      false, PARTICLE_SIZE * ( 4 ),
+                                      mParticles );
+
+
+
+
       GLES30.glEnableVertexAttribArray ( ATTRIBUTE_LIFETIME_LOCATION );
       GLES30.glEnableVertexAttribArray ( ATTRIBUTE_ENDPOSITION_LOCATION );
       GLES30.glEnableVertexAttribArray ( ATTRIBUTE_STARTPOSITION_LOCATION );
+      GLES30.glEnableVertexAttribArray ( ATTRIBUTE_COLOR_LOCATION );
 
       // Blend particles
       GLES30.glEnable ( GLES30.GL_BLEND );
@@ -304,6 +339,7 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
    // Uniform location
    private int mTimeLoc;
    private int mColorLoc;
+   private int mRandomLoc;
 
    private int mSamplerLoc;
 
@@ -318,12 +354,13 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
    private int mHeight;
    private long mLastTime = 0;
 
-   private final int NUM_PARTICLES = 500;
-   private final int PARTICLE_SIZE = 7;
+   private final int NUM_PARTICLES = 200;
+   private final int PARTICLE_SIZE = 10;
 
    private final int ATTRIBUTE_LIFETIME_LOCATION      = 0;
    private final int ATTRIBUTE_STARTPOSITION_LOCATION = 1;
    private final int ATTRIBUTE_ENDPOSITION_LOCATION   = 2;
+   private final int ATTRIBUTE_COLOR_LOCATION   = 3;
 
    // Particle vertex data
    private float [] mParticleData = new float[ NUM_PARTICLES * PARTICLE_SIZE ];
