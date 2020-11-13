@@ -352,8 +352,8 @@ public class X2DObject {
                             yVariation = y_destination;
 
                             if(rewardend){
-                                resetZoom(0.5f,false);
-                                minZoom = 0.45f;
+                                resetZoom(0.3f,false);
+                                minZoom = 0.25f;
                                 rewardend = false;
                                 rewardtime ++;
                             }
@@ -386,8 +386,8 @@ public class X2DObject {
                     }
 
                     if(rewardtime>0){
-                        resetZoom(0.5f,false);
-                        minZoom = 0.45f;
+                        resetZoom(0.3f,false);
+                        minZoom = 0.25f;
                         rewardtime++;
                     }
                 }else{
@@ -396,13 +396,17 @@ public class X2DObject {
                     }else{
 
                         if(rewardtime >0 && rewardtime <4){
-                            resetZoom(0.45f,true);
-                            maxZoom = 0.5f;
+                            resetZoom(0.25f,true);
+                            maxZoom = 0.3f;
                         }else if(rewardtime>= 4) {
                             minZoom = 0.001f;
-                            rewardtime = 0;
+                            rewardtime = -1;
                         }else{
-                                ActionInstance.getInstance().setActionType(true);
+                            if(rewardtime == -1) {
+                                ActionInstance.getInstance().setActionType(2, true);
+                                rewardtime = 0;
+                            }
+                            ActionInstance.getInstance().setActionType(1,true);
                                 isStop = true;
 
                         }

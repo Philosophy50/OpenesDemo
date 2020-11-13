@@ -48,6 +48,7 @@ public class BitmapUtil {
         Typeface font = Typeface.create(typeface, Typeface.NORMAL);
         paint.setTypeface(font);
 
+
         for (StringBitmapParameter mParameter : AllString) {
             int ALineLength = paint.breakText(mParameter.getText(), true, WIDTH, null);//检测一行多少字
             int lenght = mParameter.getText().length();
@@ -59,6 +60,7 @@ public class BitmapUtil {
 
                 for (int j = 0; j < num; j++) {
                     ALineString = mParameter.getText().substring(j * ALineLength, (j + 1) * ALineLength);
+
                     mBreakString.add(new StringBitmapParameter(ALineString, mParameter.getIsRightOrLeft(), mParameter.getIsSmallOrLarge()));
                 }
 

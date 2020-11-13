@@ -7,6 +7,9 @@ package com.example.lijian.openesdemo;
 public class ActionInstance {
     private static  ActionInstance getActionInstance= null;   ;
 
+
+    private final int TYPE_PARTICLE_AFTER_REWARD = 2;
+    private final int TYPE_NEED_RESPOND = 1;
     public synchronized static ActionInstance getInstance() {
         if (getActionInstance == null)
             getActionInstance = new ActionInstance();
@@ -15,9 +18,12 @@ public class ActionInstance {
 
     boolean type1 = false;
 
+    int typeNum = 0;
 
-    public void setActionType(boolean typeNum){
-        type1= typeNum;
+    boolean[] type = {false,false};
+    public void setActionType(int param,boolean typeNum){
+        type[param-1]= typeNum;
+        this.typeNum = param;
     }
 
 
@@ -26,11 +32,14 @@ public class ActionInstance {
 
         boolean jeff;
         switch (typeNum){
-            case 1:
+            case TYPE_NEED_RESPOND:
                 if(type1){
                     jeff = false;
                 }
-                return type1;
+                return type[0];
+
+            case TYPE_PARTICLE_AFTER_REWARD:
+                return type[1];
         }
         return false;
     }

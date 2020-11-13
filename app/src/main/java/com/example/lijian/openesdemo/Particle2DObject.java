@@ -3,6 +3,7 @@ package com.example.lijian.openesdemo;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.os.SystemClock;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -22,10 +23,10 @@ public class Particle2DObject {
     private int mRandomLoc;
     private int mSamplerLoc;
 
-    private float mTime = 1.0f;
+    private float mTime = 0.0f;
 
     private FloatBuffer mParticles;   //粒子缓存
-    private final int NUM_PARTICLES = 2;  //显示的粒子数量
+    private final int NUM_PARTICLES = 200;  //显示的粒子数量
     private final int PARTICLE_SIZE = 10;//每个粒子有多少个数据
     private float [] mParticleData = new float[ NUM_PARTICLES * PARTICLE_SIZE ];
     //粒子数据中的各项属性句柄位置
@@ -48,15 +49,15 @@ public class Particle2DObject {
             // Lifetime of particle
             mParticleData[i + 0] = ( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 10000.0f );;
             // 结束 position of particle
-            mParticleData[i + 1] = (Math.random()>0.5f?-(float) Math.random(): (float) Math.random())*10;;
-            mParticleData[i + 2] = (float) Math.random()*10;
+            mParticleData[i + 1] = (Math.random()>0.5f?-(float) Math.random(): (float) Math.random())*2;;
+            mParticleData[i + 2] = (float) Math.random()*2;
             mParticleData[i + 3] =0.0f;
             if(Math.abs(mParticleData[i + 2]) < Math.pow(Math.abs(mParticleData[i + 1] ),0.8)){
                 mParticleData[i + 2] = (float) Math.pow(Math.abs(mParticleData[i + 1] ),0.5);
             }
             // 开始 position of particle
             mParticleData[i + 4] = 0.0f;//( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 40000.0f ) - 0.125f;
-            mParticleData[i + 5] = 0.0f;//( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 40000.0f ) - 0.125f;
+            mParticleData[i + 5] = -0.6f;//( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 40000.0f ) - 0.125f;
             mParticleData[i + 6] = 0.0f;//( ( float ) ( ( int ) ( Math.random() * 10000 ) % 10000 ) / 40000.0f ) - 0.125f;
 
 
@@ -75,11 +76,19 @@ public class Particle2DObject {
         mSamplerLoc = GLES30.glGetUniformLocation ( mProgramId, "s_texture" );
         mRandomLoc = GLES30.glGetUniformLocation ( mProgramId, "s_random" );
         isInitShader = true;//初始化着色器完毕
-
+        mTime = 0.0f;
     }
 
+    public void setStropDraw(boolean param){
+        isStopDraw = param;
+    }
+
+    boolean isStopDraw = true;
 
     public void drawSelf(){
+        if(!ActionInstance.getInstance().getActionTyoe(2)) {
+            return;
+        }
 
         if(!isInitShader)
             initShader();
@@ -163,18 +172,19 @@ public class Particle2DObject {
         {
             //float [] centerPos = new float[3];
             float [] color = new float[4];
-
             mTime = 0.0f;
 
-            color[0] = (float) Math.random();// 1.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
-            color[1] =(float) Math.random();//  1.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
-            color[2] =(float) Math.random();//  0.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
+            ActionInstance.getInstance().setActionType(2,false);
+
+            color[0] = (float) 1.0f;//Math.random();// 1.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
+            color[1] =(float) 0.0f;//Math.random();//  1.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
+            color[2] =(float) 0.0f;//Math.random();//  0.0f;//( ( float ) ( ( int ) ( Math.random() * 1000 ) % 10000 ) / 20000.0f ) + 0.5f;
             color[3] =  1.0f;
 
             GLES30.glUniform4f ( mColorLoc, color[0], color[1], color[2], color[3] );
         }
+
         GLES30.glUniform1f( mRandomLoc, (float) Math.random());
-        // Load uniform time variable
         GLES30.glUniform1f ( mTimeLoc, mTime );
     }
 }

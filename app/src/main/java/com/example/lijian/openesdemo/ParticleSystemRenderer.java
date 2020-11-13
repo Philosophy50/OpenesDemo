@@ -187,8 +187,8 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
          "  texColor = texture( s_texture, gl_PointCoord );    \n" +
 
                 "texColor.r = texColor.r + v_colorPosition.r;\n" +
-                 "texColor.r = texColor.g + v_colorPosition.g;\n" +
-                 "texColor.r = texColor.b + v_colorPosition.b;\n" +
+                 "texColor.g = texColor.g + v_colorPosition.g;\n" +
+                 "texColor.b = texColor.b + v_colorPosition.b;\n" +
                  "  fragColor = texColor;            \n" +
 
 //        "  fragColor = vec4( u_color ) * texColor;            \n" +
