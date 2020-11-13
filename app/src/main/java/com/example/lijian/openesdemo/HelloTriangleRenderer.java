@@ -70,7 +70,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
    private X2DObject mTreeLeft_1,mTreeRight_1,mTreeLeft_2,mTreeLeft_3,mTreeLeft_4;
    private X2DObject mBackground,mProgressBar,mTextHint,mProgressNum2,mScoreBar;
-   private X2DObject mTensNum,mOnesNum;
+   private X2DObject mTensNum,mOnesNum,m2Lines;
    private Load2DObject mProgress;
    private  Particle2DObject mParticle;
 
@@ -121,7 +121,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
    private  int textureOnes,textureTens;//个位贴图，百位贴图
    private  int textureCity,textureLight,textureAtom,textureTree,textureBackgound,textureBar,textureProgress;
    private int textureJuice;
-   private int texturebitmap,textureParticle,textureScoreBar;
+   private int texturebitmap,textureParticle,textureScoreBar,texture2Lines;
 
    private  int textureNum0,textureNum1,textureNum2,textureNum3,textureNum4,textureNum5;
    private int textureNum6,textureNum7,textureNum8,textureNum9;
@@ -187,6 +187,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       textureScoreBar = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_scorebar.png");
       textureProgress = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_bar.png");
       textureJuice = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_juice.png");
+      texture2Lines = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_2lines.png");
 
       textureNum0 = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_numa0.png");
       textureNum1 = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_numa1.png");
@@ -222,11 +223,13 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mScoreBar.setisNeedZoom(false,false,false,false);
       mScoreBar. setzSSSS();
 
-      mTensNum = new  X2DObject(2.0f,3.0f,  11.5f,10f,200f,200f,textureNum0,programObject2);
+
+
+      mTensNum = new  X2DObject(2.6f,3.9f,  11f,10f,200f,200f,textureNum0,programObject2);
       mTensNum.setisNeedZoom(false,false,false,false);
       mTensNum. setzSSSS();
 
-      mOnesNum = new   X2DObject(2.0f,3.0f,  12f,10f,200f,200f,textureNum0,programObject2);
+      mOnesNum = new   X2DObject(2.6f,3.9f,  11.5f,10f,200f,200f,textureNum0,programObject2);
       mOnesNum.setisNeedZoom(false,false,false,false);
       mOnesNum. setzSSSS();
 
@@ -241,7 +244,13 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
       mParticle = new Particle2DObject(textureParticle,programParticle);
 
-
+      m2Lines = new X2DObject(14.2f,0.2f,          0f,-1f,         200f,200f,texture2Lines,programObject2);
+      m2Lines.setDestination(0f,-4.5f,true);
+      m2Lines.setisNeedZoom(true,true,false,false);
+      m2Lines.setZoomValue(0.1f,0.7f);
+      m2Lines.resetZoom(0.1f,true);
+      m2Lines.setLoop(true);
+      m2Lines.setZscale(20.0f, 2f);
 
       mTreeLeft_1 = new X2DObject(2f,3f,          -4f,-0.5f,         200f,200f,textureTree,programObject2);
       mTreeLeft_1.setDestination(-14.5f,-4.5f,true);
@@ -460,7 +469,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mTreeLeft_2.drawSelf();
       mTreeLeft_1.drawSelf();
       mTreeRight_1.drawSelf();
-
+  //    m2Lines.drawSelf();
 
       mPopWindowLight.drawSelf();
       mPopWindow.drawSelf();
@@ -553,6 +562,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
             mTreeLeft_1.setisStartPictureMove(true);
             mTreeRight_1.setisStartPictureMove(true);
+            m2Lines.setisStartPictureMove(true);
             touchTime++;
             setNumber(25);
             break;
@@ -573,7 +583,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             mTreeLeft_2.setTimeUp(18f);
             mTreeLeft_1.setTimeUp(18f);
             mTreeRight_1.setTimeUp(18f);
-
+            m2Lines.setTimeUp(18f);
             mProgress.setpercent(25);
             touchTime++;
             setNumber(36);
@@ -603,6 +613,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             mTreeLeft_3.setTimeUp(4f);
             mTreeLeft_2.setTimeUp(4f);
             mTreeLeft_1.setTimeUp(4f);
+            m2Lines.setTimeUp(4f);
             mTreeRight_1.setTimeUp(4f);
             setNumber(42);
             break;
