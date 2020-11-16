@@ -399,19 +399,23 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
 
       if(ActionInstance.getInstance().getRewardTrigger()){
+         ActionInstance.getInstance().setRewardTrigger();
          Log.w("test_wl","rewardCompareThread_OH YEAH");
          mParticle.setmLastTime();
+        mPopReward.setVariation(0f,-2f);
+
 //         ActionInstance.getInstance().setActionType(2, true);
          mPopReward.setisNeedZoom(true,true,false,false);
-         mPopReward. modifyOffset(0f,-2f);
+//       mPopReward. setVariation(0f,-2f);
          mPopReward.setDestination(0f,-3f,true);
          mPopReward.setZoomValue(0.1f,0.3f);
          mPopReward.setZscale(15.0f,2.0f,-9.0f);
          mPopReward.manualStop(false);
          mPopReward.setRewardEnd();
-         ActionInstance.getInstance().setRewardTrigger();
+
       } ;
    //越在前，越在下层
+/*
       mBackground.drawSelf();
       mProgressBar.drawSelf();
       mScoreBar.drawSelf();
@@ -429,9 +433,9 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mPopWindowLight.drawSelf();
       mPopWindow.drawSelf();
       mPopWinodwAtom.drawSelf();
-
+*/
       mPopReward.drawSelf();
-
+/*
       x2DObject.drawSelf();
       x2DObject1.drawSelf();
       x2DObject2.drawSelf();
@@ -439,7 +443,9 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       x2Dobject4.drawSelf();
       x2Dobject5.drawSelf();
       x2Dobject6.drawSelf();
+
       //GLES30.glDrawArrays ( GLES30.GL_TRIANGLE_STRIP, 0, 6 );
+      */
        mParticle.drawSelf();
 
    }

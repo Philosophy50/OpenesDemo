@@ -70,6 +70,10 @@ public class X2DObject {
 
     private final float moveRate = 500;           //调试用移动快慢的值
 
+    public void  setVariation(float param1,float param2){
+        xVariation = param1;
+        yVariation = param2;
+    }
     /**
      *
      * @param x         图片的  1/2  x长度
@@ -437,7 +441,7 @@ public class X2DObject {
         // Generate a model view matrix to rotate/translate the cube
         modelview.matrixLoadIdentity();
         // Translate away from the viewer
-
+        Log.w("test_wl","varia  :"+ xVariation+"/"+yVariation+"/"+zVariation);
         modelview.translate(xVariation, yVariation, zVariation);//-20.0f);
 
         // Rotate 暂时关闭
