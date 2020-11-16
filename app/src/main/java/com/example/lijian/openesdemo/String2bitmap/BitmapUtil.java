@@ -44,10 +44,12 @@ public class BitmapUtil {
         paint.setAntiAlias(false);
         paint.setTextSize(SMALL_TEXT);
 
+
         Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/songti.TTF");// 仿宋打不出汉字
         Typeface font = Typeface.create(typeface, Typeface.NORMAL);
         paint.setTypeface(font);
-
+        paint.setFakeBoldText(true);
+        paint.setColor(Color.WHITE);
 
         for (StringBitmapParameter mParameter : AllString) {
             int ALineLength = paint.breakText(mParameter.getText(), true, WIDTH, null);//检测一行多少字
@@ -82,10 +84,10 @@ public class BitmapUtil {
             if (bStr.isEmpty() | bStr.contains("\n") | mParameter.getIsSmallOrLarge() == IS_LARGE)
                 bNum++;
         }
-        Bitmap bitmap = Bitmap.createBitmap(WIDTH, FontHeight * (mBreakString.size() + bNum), Bitmap.Config.ALPHA_8);//ALPHA_8纯黑，只有透明度的更改，8888有RGB有Alpha，565只有RGB
+        Bitmap bitmap = Bitmap.createBitmap(WIDTH, FontHeight * (mBreakString.size() + bNum), Bitmap.Config.ARGB_8888);//ALPHA_8纯黑，只有透明度的更改，8888有RGB有Alpha，565只有RGB
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
-                bitmap.setPixel(i, j, Color.argb(0.0f,1.0f,1.0f,1.0f));
+                bitmap.setPixel(i, j, Color.argb(0.6f,1.0f,1.0f,1.0f));
             }
         }
 
@@ -110,11 +112,13 @@ public class BitmapUtil {
                 x = (WIDTH - paint.measureText(str)) / 2.0f;
             }
 
+
             if (str.isEmpty() | str.contains("\n") | mParameter.getIsSmallOrLarge() == IS_LARGE) {
                 canvas.drawText(str, x, y + FontHeight / 2, paint);
                 y = y + FontHeight;
             } else {
                 canvas.drawText(str, x, y, paint);
+
             }
             y = y + FontHeight;
         }

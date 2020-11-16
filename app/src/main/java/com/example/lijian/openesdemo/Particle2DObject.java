@@ -79,6 +79,7 @@ public class Particle2DObject {
         mTime = 0.0f;
     }
 
+
     public void setStropDraw(boolean param){
         isStopDraw = param;
     }
@@ -151,6 +152,9 @@ public class Particle2DObject {
 
     }
 
+    public void setmLastTime(){
+        mLastTime = 0;
+    }
 
     private void update()
     {

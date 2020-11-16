@@ -13,10 +13,14 @@ import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.os.SystemClock;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 
 import com.example.lijian.openesdemo.ESUtils.ESShader;
@@ -132,51 +136,22 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
    public void onSurfaceCreated ( GL10 glUnused, EGLConfig config )
    {
+       Log.w("test_wl","onSurfaceCreated_start:"+SystemClock.elapsedRealtime());
 
-      String vShaderStr =
-         "#version 300 es 			  \n"
-         +   "in vec4 vPosition;           \n"          //输入向量
-         +  "in vec2 a_texCoord;            \n"          //纹理向量
-                 +"out vec2 v_texCoord;   \n"
-                 +  "uniform mat4 u_mvpMatrix;      \n"
-         + "void main()                  \n"
-         + "{                            \n"
-         + " gl_Position = u_mvpMatrix * vPosition;  \n"
-         + " v_texCoord = a_texCoord;  \n"             //纹理向量赋值输出
-         + "}                            \n";
-
-      String fShaderStr =
-         "#version 300 es		 			          	\n"
-         + "precision mediump float;					  	\n"  //fragment Shader里必须指明Float精度      //声明着色器版本es3.0
-                 +"in vec2  v_texCoord;                        \n"     //片元着色器纹理输入向量
-                 + "out vec4 fragColor;	 			 		  	\n"      //输出向量
-                 +" uniform sampler2D s_baseMap;                 \n"   //2D纹理贴图变量
-         + "void main()                                  \n"
-         + "{                                            \n"
-         + "  vec4 baseColor ;                            \n"
-         + "  baseColor = texture( s_baseMap, v_texCoord );                \n"
-         + "  fragColor = baseColor;	\n"//rgba  vec4 ( 1.0, 0.0, 0.0, 1.0 );
-         + "}                                            \n";
-      //创建顶点着色器对象和片元着色器对象
-      int vertexShader;
-      int fragmentShader;
-      int[] linked = new int[1];
-      // Load the vertex/fragment shaders 在函数中将着色语言源码加载到顶点着色器和片元着色器
-      vertexShader = LoadShader ( GLES30.GL_VERTEX_SHADER, vShaderStr );
-      fragmentShader = LoadShader ( GLES30.GL_FRAGMENT_SHADER, fShaderStr );
-      // Create the program object创建程序对象
-      int programObject;
       /*********TODO***********/
 
-
+      Log.w("test_wl","onSurfaceCreated_start_Program1:"+SystemClock.elapsedRealtime());
       programObject2 =  ESShader.loadProgramFromAsset(mContext,"shaders/vertex_2d.sh", "shaders/frag_2d.sh");
+      Log.w("test_wl","onSurfaceCreated_start_Program2:"+SystemClock.elapsedRealtime());
       programLoadingObject = ESShader.loadProgramFromAsset(mContext,"shaders/vertex_load2d.sh","shaders/frag_load2d.sh");
       programParticle = ESShader.loadProgramFromAsset(mContext,"shaders/vertex_particle.sh","shaders/frag_particle.sh");
-      textureR   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");//circle_red.png");
-      textureB   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");//ccircle_blue.png");
-      textureG   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");//ccircle_green.png");
-      textureP   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");//ccircle_purple.png");
-      textureY   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");//ccircle_yellow.png");
+      Log.w("test_wl","onSurfaceCreated_start_texture1:"+SystemClock.elapsedRealtime());
+      textureR   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
+      Log.w("test_wl","onSurfaceCreated_start_texture2:"+SystemClock.elapsedRealtime());
+      textureB   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
+      textureG   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
+      textureP   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
+      textureY   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
       textureCity  = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_city.png");
 
       textureLight = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_rotatinglight.png");
@@ -203,17 +178,23 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
       textureParticle = ESShader.loadTextureFromAsset(mContext,"smoke.png");
 
-
-
+      Log.w("test_wl","onSurfaceCreated_start_textureAll:"+SystemClock.elapsedRealtime());
       ArrayList<StringBitmapParameter> pp = new ArrayList<>();
-      sbp1 = new StringBitmapParameter("如果速度是8,则1小时后获得2点能量");
+
+      String aa = "如果速度是8,则1小时后获得2点能量";
+
+      sbp1 = new StringBitmapParameter(aa);
       pp .add(sbp1);
       texturebitmap = ESShader.loadTextureFromBitmap(mContext,BitmapUtil.StringListtoBitmap(mContext,pp));
+      Log.w("test_wl","onSurfaceCreated_start_Stringtexture:"+SystemClock.elapsedRealtime());
 
 
       mBackground = new X2DObject(256f,140f,0f,0f,200f,200f,textureBackgound,programObject2);
       mBackground.setisNeedZoom(false,false,false,false);
       mBackground. setzSSSS();
+      Log.w("test_wl","onSurfaceCreated_start_X2DObject:"+SystemClock.elapsedRealtime());
+
+
 
       mProgressBar = new X2DObject(56f,10f,  -4f,10f, 200f,200f,textureBar,programObject2);
       mProgressBar.setisNeedZoom(false,false,false,false);
@@ -363,49 +344,8 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
 
 
-      programObject = GLES30.glCreateProgram();
-
-      if ( programObject == 0 )
-      {
-         return;
-      }
-      //将着色器对象连接到程序对象
-      GLES30.glAttachShader ( programObject, vertexShader );
-      GLES30.glAttachShader ( programObject, fragmentShader );
 
 
-      // Bind vPosition to attribute 0 将着色语言中的变量与 程序对象的index绑定
-      /*
-      GLES30.glBindAttribLocation ( programObject, 0, "vPosition" );
-      GLES30.glBindAttribLocation ( programObject, 1, "a_texCoord" );
-*/
-      // Link the program 链接程序对象
-      GLES30.glLinkProgram ( programObject );
-
-      // Check the link status
-      GLES30.glGetProgramiv ( programObject, GLES30.GL_LINK_STATUS, linked, 0 );
-
-      if ( linked[0] == 0 )
-      {
-         Log.e ( TAG, "Error linking program:" );
-         Log.e ( TAG, GLES30.glGetProgramInfoLog ( programObject ) );
-         GLES30.glDeleteProgram ( programObject );
-         return;
-      }
-
-      // Store the program object
-      mProgramObject = programObject;
-      //获取程序中的句柄
-      mBaseMapLoc = GLES30.glGetUniformLocation ( mProgramObject, "s_baseMap" );
-      mMVPLoc = GLES30.glGetUniformLocation ( mProgramObject, "u_mvpMatrix" );
-
-      //获取程序中顶点位置属性引用
-      verticesIndex = GLES30.glGetAttribLocation(mProgramObject, "vPosition");
-      //获取程序中顶点纹理坐标属性引用
-      textureIndex= GLES30.glGetAttribLocation(mProgramObject, "a_texCoord");
-
-      mBaseMapTexId = loadTextureFromAsset ( "textures/basemap.png" );
-      GLES30.glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
 
       mBackground.setisStartPictureMove(true);
       mProgressBar.setisStartPictureMove(true);
@@ -413,7 +353,10 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mScoreBar.setisStartPictureMove(true);
       mProgress.setisStartPictureMove(true);
       mTensNum.setisStartPictureMove(true);
-        mOnesNum.setisStartPictureMove(true);
+      mOnesNum.setisStartPictureMove(true);
+
+      Log.w("test_wl","onSurfaceCreated_start_over:"+SystemClock.elapsedRealtime());
+      GLES30.glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
    }
 
    // /
@@ -455,7 +398,19 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       //通知绘制图元
 
 
-
+      if(ActionInstance.getInstance().getRewardTrigger()){
+         Log.w("test_wl","rewardCompareThread_OH YEAH");
+         mParticle.setmLastTime();
+//         ActionInstance.getInstance().setActionType(2, true);
+         mPopReward.setisNeedZoom(true,true,false,false);
+         mPopReward. modifyOffset(0f,-2f);
+         mPopReward.setDestination(0f,-3f,true);
+         mPopReward.setZoomValue(0.1f,0.3f);
+         mPopReward.setZscale(15.0f,2.0f,-9.0f);
+         mPopReward.manualStop(false);
+         mPopReward.setRewardEnd();
+         ActionInstance.getInstance().setRewardTrigger();
+      } ;
    //越在前，越在下层
       mBackground.drawSelf();
       mProgressBar.drawSelf();
@@ -485,7 +440,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       x2Dobject5.drawSelf();
       x2Dobject6.drawSelf();
       //GLES30.glDrawArrays ( GLES30.GL_TRIANGLE_STRIP, 0, 6 );
-         mParticle.drawSelf();
+       mParticle.drawSelf();
 
    }
 
@@ -616,6 +571,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             m2Lines.setTimeUp(4f);
             mTreeRight_1.setTimeUp(4f);
             setNumber(42);
+
             break;
          default:
             mTreeLeft_4.setisStartPictureMove(true);

@@ -40,10 +40,14 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Activity class for example program that detects OpenGL ES 3.0.
@@ -60,10 +64,19 @@ public class HelloTriangle extends Activity
    private int topPopWindow = 200;
    private int bottomPopWindow = 400;
 
+
+
+
+
+
+
+
+
    @Override
    protected void onCreate ( Bundle savedInstanceState )
    {
       super.onCreate ( savedInstanceState );
+
 
       Point outSize = new Point();
       getWindowManager().getDefaultDisplay().getRealSize(outSize);
@@ -71,6 +84,7 @@ public class HelloTriangle extends Activity
       int y = outSize.y;
       Toast.makeText(HelloTriangle.this,"x:"+x+" y:"+y,Toast.LENGTH_SHORT).show();
       Log.w("test_wl","HelloTriangle_onCreate_xsize:"+x+" ysize:"+y+" Function:useless");
+
 
       mGLSurfaceView = new GLSurfaceView ( this );
       mGLSurfaceView.setBackgroundResource(R.drawable.b_bg);
@@ -123,6 +137,9 @@ public class HelloTriangle extends Activity
          finish();
       }
       setContentView ( mGLSurfaceView );
+
+
+
    }
 
    private boolean detectOpenGLES30()
@@ -139,7 +156,7 @@ public class HelloTriangle extends Activity
       // Ideally a game should implement onResume() and onPause()
       // to take appropriate action when the activity looses focus
       super.onResume();
-      mGLSurfaceView.onResume();
+      //mGLSurfaceView.onResume();  //调用的话回到这个界面会导致从头开始，不调用可能资源不释放?
    }
 
    @Override
@@ -148,7 +165,7 @@ public class HelloTriangle extends Activity
       // Ideally a game should implement onResume() and onPause()
       // to take appropriate action when the activity looses focus
       super.onPause();
-      mGLSurfaceView.onPause();
+     // mGLSurfaceView.onPause();//调用的话回到这个界面会导致从头开始，不调用可能资源不释放?
    }
 
    @Override

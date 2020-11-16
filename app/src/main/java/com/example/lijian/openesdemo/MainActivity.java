@@ -1,18 +1,23 @@
 package com.example.lijian.openesdemo;
 
 import android.opengl.GLSurfaceView;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    GLSurfaceView glSurfaceView ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       
+//        rewardCompareThread.run();
     }
 }
