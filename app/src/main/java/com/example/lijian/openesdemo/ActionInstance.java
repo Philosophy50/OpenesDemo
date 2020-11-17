@@ -25,7 +25,7 @@ public class ActionInstance {
     private int temp;
     private int conserved = 0;
 
-    ActionInstance(){
+    private ActionInstance(){
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -56,14 +56,11 @@ public class ActionInstance {
 
     boolean type1 = false;
 
-    int typeNum = 0;
+    private int typeNum = 0;
 
     boolean[] type = {false,false};
     public void setActionType(int param,boolean typeNum){
-
         type[param-1]= typeNum;
-        Log.w("test_wl",this+"  typeNum:"+typeNum + "  "+type[0]+"/"+type[1]);
-
         this.typeNum = param;
     }
 
@@ -91,6 +88,13 @@ public class ActionInstance {
     }
 
     int scoreNum;
+
+    public void setScoreNum(int param){
+        scoreNum = param;
+    }
+    public void addScoreNum(){
+        scoreNum  = scoreNum +1;
+    }
     public int getScore(){
         return scoreNum;
     }

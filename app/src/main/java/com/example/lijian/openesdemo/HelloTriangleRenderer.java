@@ -6,6 +6,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -52,11 +54,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
                    -4.0f, 4.0f, 0.0f,
                    4.0f,4.0f,0.0f
            };//矩形的四个角
-           /*
-           { 0.0f, 2.0f, 0.0f,
-                   -1f, -1f, 0.0f,
-                   1f, -1f, 0.0f };//三角形的三个角
-         */
+
 
 
    private final float[] texCoor = new float[]{  //纹理坐标左上角是0 , 0
@@ -94,6 +92,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
               .order(ByteOrder.nativeOrder())
               .asFloatBuffer();
       mTexCoorBuffer.put(texCoor).position(0);
+
 
    }
 
@@ -288,31 +287,38 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       x2DObject1.setRespondEvent(1);
       x2DObject1.setTimeUp(9f);
       x2DObject1.setDeylayMove(2);
+      x2DObject1.setIsNeedScore();
       x2DObject2 = new X2DObject(8f,8f,      -1f,1f,         200f,200f,textureG,programObject2);
       x2DObject2.setDestination(7f,10f,false);
       x2DObject2.setRespondEvent(1);
       x2DObject2.setTimeUp(9f);
       x2DObject2.setDeylayMove(2);
+      x2DObject2.setIsNeedScore();
       x2DObject3  = new X2DObject(8f,8f,     -0.5f,0f,         200f,200f,textureLight,programObject2);
       x2DObject3.setRespondEvent(1);
       x2DObject3.setDestination(7f,10f,false);
       x2DObject3.setTimeUp(9f);
       x2DObject3.setDeylayMove(2);
+      x2DObject3.setIsNeedScore();
       x2Dobject4  = new X2DObject(8f,8f    ,0f,1f,         200f,200f,textureY,programObject2);
       x2Dobject4.setDestination(7f,10f,false);
       x2Dobject4.setRespondEvent(1);
       x2Dobject4.setTimeUp(9f);
       x2Dobject4.setDeylayMove(2);
+      x2Dobject4.setIsNeedScore();
+
       x2Dobject5  = new X2DObject(8f,8f ,   0.5f,0f,         200f,200f,textureR,programObject2);
       x2Dobject5.setDestination(7f,10f,false);
       x2Dobject5.setRespondEvent(1);
       x2Dobject5.setTimeUp(9f);
       x2Dobject5.setDeylayMove(2);
+      x2Dobject5.setIsNeedScore();
       x2Dobject6  = new X2DObject(8f,8f,     1f,1f,         200f,200f,textureB,programObject2);
       x2Dobject6.setDestination(7f,10f,false);
       x2Dobject6.setRespondEvent(1);
       x2Dobject6.setTimeUp(9f);
       x2Dobject6.setDeylayMove(2);
+      x2Dobject6.setIsNeedScore();
       mPopReward = new X2DObject(7f,7f,  0f,-2f ,    200f,200f, textureJuice,programObject2);
       mPopReward.setDestination(0f,-3f,true);
       mPopReward.setZoomValue(0.1f,0.3f);
@@ -357,6 +363,16 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
       Log.w("test_wl","onSurfaceCreated_start_over:"+SystemClock.elapsedRealtime());
       GLES30.glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
+
+      Timer timer = new Timer();
+      TimerTask timerTask = new TimerTask() {
+         @Override
+         public void run() {
+            setNumber(ActionInstance.getInstance().getScore());
+
+         }
+      };
+      timer.schedule(timerTask,0,200);
    }
 
    // /
@@ -526,7 +542,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             mTreeRight_1.setisStartPictureMove(true);
             m2Lines.setisStartPictureMove(true);
             touchTime++;
-            setNumber(25);
+            //setNumber(25);
             break;
          case 1:
 
@@ -548,7 +564,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             m2Lines.setTimeUp(18f);
             mProgress.setpercent(25);
             touchTime++;
-            setNumber(36);
+            //setNumber(36);
             break;
          case 2:
             mTreeLeft_3.setisStartPictureMove(true);
@@ -577,12 +593,12 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             mTreeLeft_1.setTimeUp(4f);
             m2Lines.setTimeUp(4f);
             mTreeRight_1.setTimeUp(4f);
-            setNumber(42);
+         //   setNumber(42);
 
             break;
          default:
             mTreeLeft_4.setisStartPictureMove(true);
-            setNumber(tempnum++);
+         //   setNumber(tempnum++);
             mProgress.setpercent(75);
             break;
 

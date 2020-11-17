@@ -65,10 +65,8 @@ public class ParticleDataConstant
 	public static final float[] RADIS=
 			{
 					0.4f,		//0-普通火焰
-
 					0.3f,
 					0.2f,
-
 					0.2f,
 					0.15f,
 					0.6f,
@@ -78,10 +76,8 @@ public class ParticleDataConstant
 	public static final float[] MAX_LIFE_SPAN=
 			{
 					5.0f,		//0-普通火焰
-
 					2f,
 					1.2f,
-
 					4f,
 					4f,
 					4f,
@@ -91,10 +87,8 @@ public class ParticleDataConstant
 	public static final float[] LIFE_SPAN_STEP=
 			{
 					0.2f,
-
 					0.1f,
 					0.1f,
-
 					0.03f,
 					0.03f,
 					0.01f,
@@ -104,10 +98,8 @@ public class ParticleDataConstant
 	public static final float[] X_RANGE=
 			{
 					0.05f,		//0-普通火焰
-
 					1f,		//0-普通火焰
 					0.3f,
-
 					0.8f,
 					0.8f,
 					2.0f,
@@ -117,10 +109,8 @@ public class ParticleDataConstant
 	public static final float[] Y_RANGE=
 			{
 					1f,		//0-普通火焰
-
 					0.8f,		//0-普通火焰d
 					0.8f,
-
 					1.8f,
 					1.8f,
 					1.0f,
@@ -130,10 +120,8 @@ public class ParticleDataConstant
 	public static final int[] GROUP_COUNT=
 			{
 					10,
-
 					1,
 					5,
-
 					5,
 					4,
 					1,
@@ -143,10 +131,8 @@ public class ParticleDataConstant
 	public static final float[] VY=
 			{
 					0.08f,
-
 					0.02f,
 					0.02f,
-
 					0.015f,
 					0.015f,
 					0.050f,

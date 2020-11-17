@@ -311,6 +311,9 @@ public class X2DObject {
                             xVariation = x_destination;
                             yVariation = y_destination;
                         }else{
+                            if(needScore){
+                                ActionInstance.getInstance().addScoreNum();
+                            }
                             isStop = true;
                         }
 
@@ -326,6 +329,9 @@ public class X2DObject {
                             xVariation = x_destination;
                             yVariation = y_destination;
                         }else{
+                            if(needScore){
+                             ActionInstance.getInstance().addScoreNum();
+                              }
                             isStop = true;
 
                         }
@@ -345,6 +351,9 @@ public class X2DObject {
                             xVariation = x_destination;
                             yVariation = y_destination;
                         }else{
+                            if(needScore){
+                                ActionInstance.getInstance().addScoreNum();
+                            }
                             isStop = true;
 
                         }
@@ -372,6 +381,9 @@ public class X2DObject {
                             }
 
                         }else{
+                            if(needScore){
+                                ActionInstance.getInstance().addScoreNum();
+                            }
                             isStop = true;
 
                         }
@@ -528,6 +540,12 @@ public class X2DObject {
     public void setDeylayMove(int seconds){
         needDelayMove = true;
         delayMoveTime = seconds * 1000;
+    }
+
+    private boolean needScore = false;
+
+    public  void setIsNeedScore (){
+        needScore = true;
     }
 }
 
