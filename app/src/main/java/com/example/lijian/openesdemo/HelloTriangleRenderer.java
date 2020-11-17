@@ -281,35 +281,38 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       x2DObject.setDestination(7f,10f,false);
       x2DObject.setTimeUp(9f);
       x2DObject.setRespondEvent(1);
+      x2DObject.setDeylayMove(2);
+
       x2DObject1=  new X2DObject (7f,7f,     -1.5f,0f,  200f,200f,textureB,programObject2);
       x2DObject1.setDestination(7f,10f,false);
       x2DObject1.setRespondEvent(1);
       x2DObject1.setTimeUp(9f);
+      x2DObject1.setDeylayMove(2);
       x2DObject2 = new X2DObject(8f,8f,      -1f,1f,         200f,200f,textureG,programObject2);
       x2DObject2.setDestination(7f,10f,false);
       x2DObject2.setRespondEvent(1);
       x2DObject2.setTimeUp(9f);
-
+      x2DObject2.setDeylayMove(2);
       x2DObject3  = new X2DObject(8f,8f,     -0.5f,0f,         200f,200f,textureLight,programObject2);
       x2DObject3.setRespondEvent(1);
       x2DObject3.setDestination(7f,10f,false);
       x2DObject3.setTimeUp(9f);
-
+      x2DObject3.setDeylayMove(2);
       x2Dobject4  = new X2DObject(8f,8f    ,0f,1f,         200f,200f,textureY,programObject2);
       x2Dobject4.setDestination(7f,10f,false);
       x2Dobject4.setRespondEvent(1);
       x2Dobject4.setTimeUp(9f);
-
+      x2Dobject4.setDeylayMove(2);
       x2Dobject5  = new X2DObject(8f,8f ,   0.5f,0f,         200f,200f,textureR,programObject2);
       x2Dobject5.setDestination(7f,10f,false);
       x2Dobject5.setRespondEvent(1);
       x2Dobject5.setTimeUp(9f);
-
+      x2Dobject5.setDeylayMove(2);
       x2Dobject6  = new X2DObject(8f,8f,     1f,1f,         200f,200f,textureB,programObject2);
       x2Dobject6.setDestination(7f,10f,false);
       x2Dobject6.setRespondEvent(1);
       x2Dobject6.setTimeUp(9f);
-
+      x2Dobject6.setDeylayMove(2);
       mPopReward = new X2DObject(7f,7f,  0f,-2f ,    200f,200f, textureJuice,programObject2);
       mPopReward.setDestination(0f,-3f,true);
       mPopReward.setZoomValue(0.1f,0.3f);
@@ -553,7 +556,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             mPopWindow.setisNeedZoom(true,false,false,true);
             mPopWindow.setAlphaUp(false);
             mPopWindow.setZoomValue(0.1f,0.625f);
-            mPopWindow.setsmall(true);
+            mPopWindow.setsmall(true);  //先缩小后变大
             mPopWindow.resetZoom(0.5f,true);
             mPopWindow.setAlphaValue(0.1f,1.1f);
 
@@ -561,7 +564,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
             mPopWinodwAtom.manualStop(false);
             mPopWinodwAtom.setDestination(0f,0f,false);
-            mPopWinodwAtom. resetZoom(0.5f,false);
+            mPopWinodwAtom. resetZoom(1.1f,false);
             mPopWinodwAtom.setisNeedZoom(true,false,false,true);
             mPopWinodwAtom.setAlphaUp(true);
             mPopWinodwAtom.setAlphaValue(0.1f,0.8f);

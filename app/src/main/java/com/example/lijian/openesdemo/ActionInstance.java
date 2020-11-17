@@ -89,4 +89,9 @@ public class ActionInstance {
         }
         return false;
     }
+
+    int scoreNum;
+    public int getScore(){
+        return scoreNum;
+    }
 }

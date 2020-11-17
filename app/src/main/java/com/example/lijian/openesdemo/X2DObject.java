@@ -223,8 +223,8 @@ public class X2DObject {
     }
 
 
-    public void resetZoom(float paramf,boolean isZoomUp){
-        zoomMultiples = paramf;
+    public void resetZoom(float paramfZoom,boolean isZoomUp){
+        zoomMultiples = paramfZoom;
         this.isZoomUp = isZoomUp;
     }
 
@@ -283,7 +283,16 @@ public class X2DObject {
                          changeAlpha -= 0.01f;
                  }
             }
-
+            if(needDelayMove){  //延迟移动
+                if(delayRecordTime == 0){
+                    delayRecordTime = SystemClock.elapsedRealtime();
+                }
+                if((SystemClock.elapsedRealtime() - delayRecordTime )> delayMoveTime){
+                    isNeedMove = true;
+                }else{
+                    isNeedMove = false;
+                }
+            }
             if(isNeedMove) {
                 xVariation +=    (x_destination - x_offset)/(moveRate)  *timeUp;
                 yVariation +=   (y_destination-y_offset)/(moveRate)   *timeUp;
@@ -397,6 +406,7 @@ public class X2DObject {
                     }
                 }else{
                     if (zoomMultiples >= minZoom) {
+                        Log.w("test_wl",this+" zoom-:"+zoomMultiples+"/"+minZoom);
                         zoomMultiples -= 0.01f;
                     }else{
 
@@ -411,8 +421,10 @@ public class X2DObject {
                             ActionInstance.getInstance().setActionType(2, true);
                             rewardtime = 0;
                             isStop = true;
+                        }else{
+                            isStop = true;
+                            ActionInstance.getInstance().setActionType(1,true);
                         }
-
                         /*
                         else{
                             if(rewardtime == -1) {
@@ -429,11 +441,8 @@ public class X2DObject {
                         }
                         */
                     }
-
-
                 }
             }
-
 
         }else{
             return;
@@ -510,6 +519,15 @@ public class X2DObject {
 
     public void setRewardEnd(){
         rewardend = true;
+    }
+
+    private boolean needDelayMove = false;
+    private int delayMoveTime = 0;
+    private long delayRecordTime = 0;
+
+    public void setDeylayMove(int seconds){
+        needDelayMove = true;
+        delayMoveTime = seconds * 1000;
     }
 }
 
