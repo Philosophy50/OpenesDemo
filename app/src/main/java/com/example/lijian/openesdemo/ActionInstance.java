@@ -34,7 +34,6 @@ public class ActionInstance {
                 temp = (int) (REWARD_NUMBER_PARAM / REWARD_NUMBER_LOCAL);
                 try {
                     if (temp > conserved) {
-                        Log.w("test_wl", "rewardCompareThread_conserved = " + conserved + " temp = " + temp + "  " + SystemClock.elapsedRealtime());
                         rewardTrigger = true;
                         conserved = temp;
                     }

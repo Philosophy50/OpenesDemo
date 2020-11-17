@@ -124,7 +124,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
    private  int textureR,textureB,textureG,textureP,textureY,programObject2,programLoadingObject,programParticle;
    private  int textureOnes,textureTens;//个位贴图，百位贴图
    private  int textureCity,textureLight,textureAtom,textureTree,textureBackgound,textureBar,textureProgress;
-   private int textureJuice;
+   private int textureJuice,textureStar;
    private int texturebitmap,textureParticle,textureScoreBar,texture2Lines;
 
    private  int textureNum0,textureNum1,textureNum2,textureNum3,textureNum4,textureNum5;
@@ -162,6 +162,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       textureScoreBar = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_scorebar.png");
       textureProgress = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_bar.png");
       textureJuice = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_juice.png");
+      textureStar = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_reward_star.png");
       texture2Lines = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_2lines.png");
 
       textureNum0 = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_numa0.png");
@@ -343,10 +344,6 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       /*********TODO***********/
 
 
-
-
-
-
       mBackground.setisStartPictureMove(true);
       mProgressBar.setisStartPictureMove(true);
       mTextHint.setisStartPictureMove(true);
@@ -390,23 +387,24 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       // Set the base map sampler to texture unit to 0
       GLES30.glUniform1i ( mBaseMapLoc, 0 );
 
-
-
-              // Load the MVP matrix
+       // Load the MVP matrix
       GLES30.glUniformMatrix4fv ( mMVPLoc, 1, false,
               mMVPMatrix.getAsFloatBuffer() );
-      //通知绘制图元
-
 
       if(ActionInstance.getInstance().getRewardTrigger()){
          ActionInstance.getInstance().setRewardTrigger();
-         Log.w("test_wl","rewardCompareThread_OH YEAH");
          mParticle.setmLastTime();
-        mPopReward.setVariation(0f,-2f);
-
-//         ActionInstance.getInstance().setActionType(2, true);
+         if(temp) {  //TODO 这肯定要替换掉的
+            mPopReward.setTexture(textureJuice);
+            temp  = !temp;
+         }else{
+            mPopReward.setTexture(textureStar);
+            temp  = !temp;
+         }
+         mPopReward.setVariation(0f,-2f);
+         mPopReward.resetZoom(0.1f,true);   //重置奖励的当前缩放倍数
+         mPopReward. setzSSSS();             //重置奖励的Z轴高度
          mPopReward.setisNeedZoom(true,true,false,false);
-//       mPopReward. setVariation(0f,-2f);
          mPopReward.setDestination(0f,-3f,true);
          mPopReward.setZoomValue(0.1f,0.3f);
          mPopReward.setZscale(15.0f,2.0f,-9.0f);
@@ -415,7 +413,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
       } ;
    //越在前，越在下层
-/*
+
       mBackground.drawSelf();
       mProgressBar.drawSelf();
       mScoreBar.drawSelf();
@@ -433,9 +431,9 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mPopWindowLight.drawSelf();
       mPopWindow.drawSelf();
       mPopWinodwAtom.drawSelf();
-*/
+
       mPopReward.drawSelf();
-/*
+
       x2DObject.drawSelf();
       x2DObject1.drawSelf();
       x2DObject2.drawSelf();
@@ -445,11 +443,11 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       x2Dobject6.drawSelf();
 
       //GLES30.glDrawArrays ( GLES30.GL_TRIANGLE_STRIP, 0, 6 );
-      */
+
        mParticle.drawSelf();
 
    }
-
+   boolean temp = false;
    // /
    // Handle surface changes
    //

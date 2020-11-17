@@ -182,6 +182,7 @@ public class X2DObject {
         return isStop;
     }
     public void drawSelf(){
+
         if(isStop){
             return;
         }
@@ -189,7 +190,6 @@ public class X2DObject {
             if( !ActionInstance.getInstance().getActionTyoe(respondEventNum))
                 return;
         }
-
         if(!isInitShader)
             initShader();
         update();
@@ -235,7 +235,6 @@ public class X2DObject {
 
     public void setAlphaUp(boolean param){
         changeAlpha = ((isAlphaUp = param  )? alphaMin:alphaMax);
-        Log.w("test_wl","111");
     }
 
     public void setAlphaValue(float minParam ,float maxParam){
@@ -270,7 +269,6 @@ public class X2DObject {
         float aspect;
 
         // Compute a rotation angle based on time to rotate the cube
-
         if(isStartPictureMove) {
 
 
@@ -320,6 +318,7 @@ public class X2DObject {
                             yVariation = y_destination;
                         }else{
                             isStop = true;
+
                         }
 
                         if(isLoop){
@@ -338,6 +337,7 @@ public class X2DObject {
                             yVariation = y_destination;
                         }else{
                             isStop = true;
+
                         }
 
                         if(isLoop){
@@ -364,6 +364,7 @@ public class X2DObject {
 
                         }else{
                             isStop = true;
+
                         }
 
                         if(isLoop){
@@ -405,15 +406,28 @@ public class X2DObject {
                         }else if(rewardtime>= 4) {
                             minZoom = 0.001f;
                             rewardtime = -1;
-                        }else{
+                        }
+                        else if (rewardtime == -1) {
+                            ActionInstance.getInstance().setActionType(2, true);
+                            rewardtime = 0;
+                            isStop = true;
+                        }
+
+                        /*
+                        else{
                             if(rewardtime == -1) {
                                 ActionInstance.getInstance().setActionType(2, true);
                                 rewardtime = 0;
+
                             }
                             ActionInstance.getInstance().setActionType(1,true);
-                                isStop = true;
+                            isStop = true;
+                            //isStop = true;
+                            Log.w("test_wl","issstop 5");
+
 
                         }
+                        */
                     }
 
 
@@ -441,7 +455,6 @@ public class X2DObject {
         // Generate a model view matrix to rotate/translate the cube
         modelview.matrixLoadIdentity();
         // Translate away from the viewer
-        Log.w("test_wl","varia  :"+ xVariation+"/"+yVariation+"/"+zVariation);
         modelview.translate(xVariation, yVariation, zVariation);//-20.0f);
 
         // Rotate 暂时关闭
@@ -449,11 +462,9 @@ public class X2DObject {
             modelview.rotate(mAngle, 0.0f, 0.0f, 1.0f);
         }
 
-        if(pramA) {
-            modelview.scale(0.05f, 0.1f, 0.3f);
-        }else{
-            modelview.scale(zoomMultiples,zoomMultiples,0.3f);//0.3f);//zoomMultiples);
-        }
+
+        modelview.scale(zoomMultiples,zoomMultiples,0.3f);//0.3f);//zoomMultiples);
+
         // Compute the final MVP by multiplying the
         // modevleiw and perspective matrices together
         mMVPMatrix.matrixMultiply ( modelview.get(), perspective.get());
