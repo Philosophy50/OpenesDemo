@@ -324,7 +324,11 @@ public class X2DObject {
                         }else{
                             if(needScore){
                                 ActionInstance.getInstance().setActionType(1,false);
+
                                 ActionInstance.getInstance().addScoreNum();
+                            }
+                            if(showLandMark){
+                                ActionInstance.getInstance().setActionType(3,true);
                             }
                             isStop = true;
                         }
@@ -343,9 +347,12 @@ public class X2DObject {
                         }else{
                             if(needScore){
                                 ActionInstance.getInstance().setActionType(1,false);
-
                                 ActionInstance.getInstance().addScoreNum();
+
                               }
+                              if(showLandMark){
+                                ActionInstance.getInstance().setActionType(3,true);
+                            }
                             isStop = true;
 
                         }
@@ -369,6 +376,9 @@ public class X2DObject {
                                 ActionInstance.getInstance().setActionType(1,false);
 
                                 ActionInstance.getInstance().addScoreNum();
+                            }
+                            if(showLandMark){
+                                ActionInstance.getInstance().setActionType(3,true);
                             }
                             isStop = true;
 
@@ -401,6 +411,9 @@ public class X2DObject {
                                 ActionInstance.getInstance().setActionType(1,false);
 
                                 ActionInstance.getInstance().addScoreNum();
+                            }
+                            if(showLandMark){
+                                ActionInstance.getInstance().setActionType(3,true);
                             }
                             isStop = true;
 
@@ -563,6 +576,13 @@ public class X2DObject {
 
     public  void setIsNeedScore (){
         needScore = true;
+    }
+
+
+    private boolean showLandMark = false;
+
+    public void showLandMark(){
+        showLandMark = true;
     }
 }
 

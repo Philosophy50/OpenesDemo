@@ -14,7 +14,7 @@ import java.util.TimerTask;
 public class ActionInstance {
     private static  ActionInstance getActionInstance= null;   ;
 
-
+    private final int TYPE_PARTICLE_AFTER_SCORE = 3;
     private final int TYPE_PARTICLE_AFTER_REWARD = 2;
     private final int TYPE_NEED_RESPOND = 1;
 
@@ -58,7 +58,7 @@ public class ActionInstance {
 
     private int typeNum = 0;
 
-    boolean[] type = {false,false};
+    boolean[] type = {false,false,false};
     public void setActionType(int param,boolean typeNum){
         type[param-1]= typeNum;
         this.typeNum = param;
@@ -82,6 +82,8 @@ public class ActionInstance {
 
             case TYPE_PARTICLE_AFTER_REWARD:
                 return type[1];
+            case TYPE_PARTICLE_AFTER_SCORE:
+                return type[2];
         }
         return false;
     }

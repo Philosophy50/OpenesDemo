@@ -68,10 +68,10 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
 
    private X2DObject x2DObject,x2DObject1,x2DObject2,x2DObject3,x2Dobject4,x2Dobject5,x2Dobject6;
-   private X2DObject mPopWindow,mPopWindowLight,mPopWinodwAtom,mPopReward,mPopObject;
+   private X2DObject mPopWindow,mPopWindowLight,mPopWinodwAtom,mPopReward,mPopObject,mPopLandMark;
 
    private X2DObject mTreeLeft_1,mTreeRight_1,mTreeLeft_2,mTreeLeft_3,mTreeLeft_4;
-   private X2DObject mBackground,mProgressBar,mTextHint,mProgressNum2,mScoreBar;
+   private X2DObject mBackground,mProgressBar,mProgressBarbg,mTextHint,mProgressNum2,mScoreBar,mProgressBg;
    private X2DObject mTensNum,mOnesNum,m2Lines;
    private Load2DObject mProgress;
    private  Particle2DObject mParticle;
@@ -121,8 +121,9 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       return shader;
    }
    private  int programObject2,programLoadingObject,programParticle;
-   private  int textureCity,textureLight,textureAtom,textureTree,textureBackgound,textureBar,textureProgress;
+   private  int textureCity,textureLight,textureAtom,textureTree,textureBackgound,textureBar,textureProgress,textureProgressBg;
    private int textureJuice,textureStar,textureScoStar;
+    private int textureLM_SH_a;
    private int texturebitmap,textureParticle,textureScoreBar,texture2Lines;
 
    private  int textureNum0,textureNum1,textureNum2,textureNum3,textureNum4,textureNum5;
@@ -151,9 +152,12 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       textureBar = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_progressbar.png");
       textureScoreBar = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_scorebar.png");
       textureProgress = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_bar.png");
+      textureProgressBg = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_barbg.png");
       textureJuice = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_juice.png");
       textureStar = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_reward_star.png");
       texture2Lines = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_2lines.png");
+       textureLM_SH_a = ESShader.loadTextureFromAsset(mContext,"textures/b_lm_sh_a.png");
+
 
       textureNum0 = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_numa0.png");
       textureNum1 = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_numa1.png");
@@ -185,10 +189,22 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       Log.w("test_wl","onSurfaceCreated_start_X2DObject:"+SystemClock.elapsedRealtime());
 
 
-
       mProgressBar = new X2DObject(56f,10f,  -4f,10f, 200f,200f,textureBar,programObject2);
       mProgressBar.setisNeedZoom(false,false,false,false);
       mProgressBar. setzSSSS();
+
+
+       mProgress = new Load2DObject(35f,3.2f,  -3.5f,10.05f, 200f,200f,textureProgress,programLoadingObject);
+       mProgress.setisNeedZoom(false,false,false,false);
+       mProgress. setzSSSS();
+       mProgress.setParamA();
+
+       mProgressBg = new X2DObject(35f,3.2f,  -3.5f,10.02f, 200f,200f,textureProgressBg,programObject2);
+       mProgressBg.setisNeedZoom(false,false,false,false);
+       mProgressBg. setzSSSS();
+       mProgressBg.setParamA();
+
+
 
       mScoreBar = new X2DObject(33.6f,10f,9.0f,10f,200f,200f,textureScoreBar,programObject2);
       mScoreBar.setisNeedZoom(false,false,false,false);
@@ -208,10 +224,10 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mTextHint.setisNeedZoom(false,false,false,false);
       mTextHint. setzSSSS();
 //12
-      mProgress = new Load2DObject(32f,2f,  -4f,10f, 200f,200f,textureProgress,programLoadingObject);
-      mProgress.setisNeedZoom(false,false,false,false);
-      mProgress. setzSSSS();
-      mProgress.setParamA();
+
+
+
+
 
       mParticle = new Particle2DObject(textureParticle,programParticle);
 
@@ -309,6 +325,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       x2Dobject6.setTimeUp(9f);
       x2Dobject6.setDeylayMove(12);
       x2Dobject6.setIsNeedScore();
+       x2Dobject6.showLandMark(); //TODO 算结尾
       mPopReward = new X2DObject(7f,7f,  0f,-2f ,    200f,200f, textureJuice,programObject2);
       mPopReward.setDestination(0f,-3f,true);
       mPopReward.setZoomValue(0.1f,0.3f);
@@ -325,6 +342,14 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
      mPopObject.setDeylayMove(1);
       mPopObject.setIsNeedScore();
       mPopObject.setisStartPictureMove(true);
+
+
+       mPopLandMark = new X2DObject(10f,16f,  0f,0f ,    200f,200f, textureLM_SH_a,programObject2);
+       mPopLandMark.setDestination(0f,0f,true);
+       mPopLandMark.resetZoom(0.5f,true);
+       mPopLandMark.setisNeedZoom(false,false,false,false);
+       mPopLandMark.setZscale(15.0f,1.0f,-19.0f);
+       mPopLandMark.setRespondEvent(3);
 
 
       mPopWindow = new X2DObject(7f,7f,  0f,-2f ,    200f,200f, textureCity,programObject2);
@@ -352,9 +377,10 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mTextHint.setisStartPictureMove(true);
       mScoreBar.setisStartPictureMove(true);
       mProgress.setisStartPictureMove(true);
+       mProgressBg.setisStartPictureMove(true);
       mTensNum.setisStartPictureMove(true);
       mOnesNum.setisStartPictureMove(true);
-
+       mPopLandMark.setisStartPictureMove(true);
       Log.w("test_wl","onSurfaceCreated_start_over:"+SystemClock.elapsedRealtime());
       GLES30.glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
 
@@ -429,10 +455,12 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
       mBackground.drawSelf();
       mProgressBar.drawSelf();
+       mProgressBg.drawSelf();
       mScoreBar.drawSelf();
       mTensNum.drawSelf();
       mOnesNum.drawSelf();
       mTextHint.drawSelf();
+
       mProgress.drawSelf();
 //      mTreeLeft_4.drawSelf();
  //     mTreeLeft_3.drawSelf();
@@ -458,7 +486,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       //GLES30.glDrawArrays ( GLES30.GL_TRIANGLE_STRIP, 0, 6 );
 
        mParticle.drawSelf();
-
+       mPopLandMark.drawSelf();
    }
    boolean temp = false;
    // /
@@ -588,9 +616,11 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             m2Lines.setTimeUp(4f);
             mTreeRight_1.setTimeUp(4f);
          //   setNumber(42);
-             touchTime = 0;
+             touchTime++;
             break;
          default:
+             mPopLandMark.manualStop(true);
+             ActionInstance.getInstance().setActionType(3,false);
 //            mTreeLeft_4.setisStartPictureMove(true);
 //         //   setNumber(tempnum++);
 //            mProgress.setpercent(75);

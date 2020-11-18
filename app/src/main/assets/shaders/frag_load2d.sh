@@ -11,11 +11,12 @@ void main()
 {
     float ff=xPosition;
    if(vxPosition>= x2Position && vxPosition<ff){
-       fragColor = vec4(1.0,0.0,0.0,1.0);
-   }else{
     vec4 mask = texture(sTexture, vTextureCoord);
           mask.a *= aptt;
           fragColor = mask ;
+
+   }else{
+          fragColor = vec4(0.0,0.0,0.0,0.0);
 
    }
 }              
