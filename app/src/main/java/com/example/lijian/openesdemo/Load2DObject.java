@@ -321,7 +321,7 @@ public class Load2DObject {
                     if (zoomMultiples >= minZoom) {
                         zoomMultiples -= 0.01f;
                     }else{
-//                        ActionInstance.getInstance().setActionType(1,true);
+                        ActionInstance.getInstance().setActionType(1,true);
                         isStop = true;
                     }
                 }

@@ -68,7 +68,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
 
    private X2DObject x2DObject,x2DObject1,x2DObject2,x2DObject3,x2Dobject4,x2Dobject5,x2Dobject6;
-   private X2DObject mPopWindow,mPopWindowLight,mPopWinodwAtom,mPopReward;
+   private X2DObject mPopWindow,mPopWindowLight,mPopWinodwAtom,mPopReward,mPopObject;
 
    private X2DObject mTreeLeft_1,mTreeRight_1,mTreeLeft_2,mTreeLeft_3,mTreeLeft_4;
    private X2DObject mBackground,mProgressBar,mTextHint,mProgressNum2,mScoreBar;
@@ -120,10 +120,9 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       }
       return shader;
    }
-   private  int textureR,textureB,textureG,textureP,textureY,programObject2,programLoadingObject,programParticle;
-   private  int textureOnes,textureTens;//个位贴图，百位贴图
+   private  int programObject2,programLoadingObject,programParticle;
    private  int textureCity,textureLight,textureAtom,textureTree,textureBackgound,textureBar,textureProgress;
-   private int textureJuice,textureStar;
+   private int textureJuice,textureStar,textureScoStar;
    private int texturebitmap,textureParticle,textureScoreBar,texture2Lines;
 
    private  int textureNum0,textureNum1,textureNum2,textureNum3,textureNum4,textureNum5;
@@ -139,20 +138,12 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
 
       /*********TODO***********/
 
-      Log.w("test_wl","onSurfaceCreated_start_Program1:"+SystemClock.elapsedRealtime());
       programObject2 =  ESShader.loadProgramFromAsset(mContext,"shaders/vertex_2d.sh", "shaders/frag_2d.sh");
-      Log.w("test_wl","onSurfaceCreated_start_Program2:"+SystemClock.elapsedRealtime());
       programLoadingObject = ESShader.loadProgramFromAsset(mContext,"shaders/vertex_load2d.sh","shaders/frag_load2d.sh");
       programParticle = ESShader.loadProgramFromAsset(mContext,"shaders/vertex_particle.sh","shaders/frag_particle.sh");
-      Log.w("test_wl","onSurfaceCreated_start_texture1:"+SystemClock.elapsedRealtime());
-      textureR   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
-      Log.w("test_wl","onSurfaceCreated_start_texture2:"+SystemClock.elapsedRealtime());
-      textureB   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
-      textureG   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
-      textureP   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
-      textureY   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
-      textureCity  = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_city.png");
 
+      textureScoStar   = ESShader.loadTextureFromAsset(mContext,"textures/b_star.png");
+      textureCity  = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_city.png");
       textureLight = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_rotatinglight.png");
       textureAtom  = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_atomization.png");
       textureTree  = ESShader.loadTextureFromAssetAlpha(mContext,"textures/a_tree.png");
@@ -174,7 +165,6 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       textureNum7 = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_numa7.png");
       textureNum8 = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_numa8.png");
       textureNum9 = ESShader.loadTextureFromAssetAlpha(mContext,"textures/b_numa9.png");
-//textures/
 
       textureParticle = ESShader.loadTextureFromAsset(mContext,"smoke.png");
 
@@ -276,48 +266,48 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mTreeRight_1.setZscale(20.0f,4.5f);
 
 
-      x2DObject =   new X2DObject(10f,10f,   -2f,7f,   200f,200f,textureR,programObject2);
+      x2DObject =   new X2DObject(10f,10f,   -2f,7f,   200f,200f,textureScoStar,programObject2);
       x2DObject.setDestination(7f,10f,false);
       x2DObject.setTimeUp(9f);
       x2DObject.setRespondEvent(1);
       x2DObject.setDeylayMove(2);
 
-      x2DObject1=  new X2DObject (7f,7f,     -1.5f,0f,  200f,200f,textureB,programObject2);
+      x2DObject1=  new X2DObject (7f,7f,     -1.5f,0f,  200f,200f,textureScoStar,programObject2);
       x2DObject1.setDestination(7f,10f,false);
       x2DObject1.setRespondEvent(1);
       x2DObject1.setTimeUp(9f);
-      x2DObject1.setDeylayMove(2);
+      x2DObject1.setDeylayMove(4);
       x2DObject1.setIsNeedScore();
-      x2DObject2 = new X2DObject(8f,8f,      -1f,1f,         200f,200f,textureG,programObject2);
+      x2DObject2 = new X2DObject(8f,8f,      -1f,1f,         200f,200f,textureScoStar,programObject2);
       x2DObject2.setDestination(7f,10f,false);
       x2DObject2.setRespondEvent(1);
       x2DObject2.setTimeUp(9f);
-      x2DObject2.setDeylayMove(2);
+      x2DObject2.setDeylayMove(6);
       x2DObject2.setIsNeedScore();
-      x2DObject3  = new X2DObject(8f,8f,     -0.5f,0f,         200f,200f,textureLight,programObject2);
+      x2DObject3  = new X2DObject(8f,8f,     -0.5f,0f,         200f,200f,textureScoStar,programObject2);
       x2DObject3.setRespondEvent(1);
       x2DObject3.setDestination(7f,10f,false);
       x2DObject3.setTimeUp(9f);
-      x2DObject3.setDeylayMove(2);
+      x2DObject3.setDeylayMove(8);
       x2DObject3.setIsNeedScore();
-      x2Dobject4  = new X2DObject(8f,8f    ,0f,1f,         200f,200f,textureY,programObject2);
+      x2Dobject4  = new X2DObject(8f,8f    ,0f,1f,         200f,200f,textureScoStar,programObject2);
       x2Dobject4.setDestination(7f,10f,false);
       x2Dobject4.setRespondEvent(1);
       x2Dobject4.setTimeUp(9f);
-      x2Dobject4.setDeylayMove(2);
+      x2Dobject4.setDeylayMove(10);
       x2Dobject4.setIsNeedScore();
 
-      x2Dobject5  = new X2DObject(8f,8f ,   0.5f,0f,         200f,200f,textureR,programObject2);
+      x2Dobject5  = new X2DObject(8f,8f ,   0.5f,0f,         200f,200f,textureScoStar,programObject2);
       x2Dobject5.setDestination(7f,10f,false);
       x2Dobject5.setRespondEvent(1);
       x2Dobject5.setTimeUp(9f);
-      x2Dobject5.setDeylayMove(2);
+      x2Dobject5.setDeylayMove(11);
       x2Dobject5.setIsNeedScore();
-      x2Dobject6  = new X2DObject(8f,8f,     1f,1f,         200f,200f,textureB,programObject2);
+      x2Dobject6  = new X2DObject(8f,8f,     1f,1f,         200f,200f,textureScoStar,programObject2);
       x2Dobject6.setDestination(7f,10f,false);
       x2Dobject6.setRespondEvent(1);
       x2Dobject6.setTimeUp(9f);
-      x2Dobject6.setDeylayMove(2);
+      x2Dobject6.setDeylayMove(12);
       x2Dobject6.setIsNeedScore();
       mPopReward = new X2DObject(7f,7f,  0f,-2f ,    200f,200f, textureJuice,programObject2);
       mPopReward.setDestination(0f,-3f,true);
@@ -328,9 +318,13 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       mPopReward.setRewardEnd();
 
 
-
-
-
+      mPopObject = new X2DObject(8f,8f,  0f,-7f ,    200f,200f, textureScoStar,programObject2);
+      mPopObject.setDestination(7f,10f,false);
+      mPopObject.setRespondEvent(2);
+      mPopObject.setTimeUp(9f);
+     mPopObject.setDeylayMove(1);
+      mPopObject.setIsNeedScore();
+      mPopObject.setisStartPictureMove(true);
 
 
       mPopWindow = new X2DObject(7f,7f,  0f,-2f ,    200f,200f, textureCity,programObject2);
@@ -460,7 +454,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       x2Dobject4.drawSelf();
       x2Dobject5.drawSelf();
       x2Dobject6.drawSelf();
-
+      mPopObject.drawSelf();
       //GLES30.glDrawArrays ( GLES30.GL_TRIANGLE_STRIP, 0, 6 );
 
        mParticle.drawSelf();
@@ -594,12 +588,12 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
             m2Lines.setTimeUp(4f);
             mTreeRight_1.setTimeUp(4f);
          //   setNumber(42);
-
+             touchTime = 0;
             break;
          default:
-            mTreeLeft_4.setisStartPictureMove(true);
-         //   setNumber(tempnum++);
-            mProgress.setpercent(75);
+//            mTreeLeft_4.setisStartPictureMove(true);
+//         //   setNumber(tempnum++);
+//            mProgress.setpercent(75);
             break;
 
       }

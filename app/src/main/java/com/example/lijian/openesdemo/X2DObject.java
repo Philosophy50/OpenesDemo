@@ -181,15 +181,25 @@ public class X2DObject {
     public boolean getStopState(){
         return isStop;
     }
+
+    boolean daoweile = true;
     public void drawSelf(){
 
         if(isStop){
+            if(needRespond) {
+                daoweile = true;
+                setVariation(x_offset, y_offset);
+                isStop = false;   //转一下停止绘图的判断
+            }
             return;
         }
         if( needRespond   ){
-            if( !ActionInstance.getInstance().getActionTyoe(respondEventNum))
-                return;
+            if( (!ActionInstance.getInstance().getActionTyoe(respondEventNum)) ) {
+                if (daoweile)
+                    return;
+            }
         }
+        daoweile = false;
         if(!isInitShader)
             initShader();
         update();
@@ -292,6 +302,7 @@ public class X2DObject {
                 }else{
                     isNeedMove = false;
                 }
+                Log.w("test_wl","isNeedMove:"+isNeedMove);
             }
             if(isNeedMove) {
                 xVariation +=    (x_destination - x_offset)/(moveRate)  *timeUp;
@@ -312,6 +323,7 @@ public class X2DObject {
                             yVariation = y_destination;
                         }else{
                             if(needScore){
+                                ActionInstance.getInstance().setActionType(1,false);
                                 ActionInstance.getInstance().addScoreNum();
                             }
                             isStop = true;
@@ -330,7 +342,9 @@ public class X2DObject {
                             yVariation = y_destination;
                         }else{
                             if(needScore){
-                             ActionInstance.getInstance().addScoreNum();
+                                ActionInstance.getInstance().setActionType(1,false);
+
+                                ActionInstance.getInstance().addScoreNum();
                               }
                             isStop = true;
 
@@ -352,6 +366,8 @@ public class X2DObject {
                             yVariation = y_destination;
                         }else{
                             if(needScore){
+                                ActionInstance.getInstance().setActionType(1,false);
+
                                 ActionInstance.getInstance().addScoreNum();
                             }
                             isStop = true;
@@ -382,6 +398,8 @@ public class X2DObject {
 
                         }else{
                             if(needScore){
+                                ActionInstance.getInstance().setActionType(1,false);
+
                                 ActionInstance.getInstance().addScoreNum();
                             }
                             isStop = true;
@@ -418,7 +436,6 @@ public class X2DObject {
                     }
                 }else{
                     if (zoomMultiples >= minZoom) {
-                        Log.w("test_wl",this+" zoom-:"+zoomMultiples+"/"+minZoom);
                         zoomMultiples -= 0.01f;
                     }else{
 
@@ -539,7 +556,7 @@ public class X2DObject {
 
     public void setDeylayMove(int seconds){
         needDelayMove = true;
-        delayMoveTime = seconds * 1000;
+        delayMoveTime = seconds * 100;
     }
 
     private boolean needScore = false;

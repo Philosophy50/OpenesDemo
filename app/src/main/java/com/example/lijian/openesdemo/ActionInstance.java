@@ -78,7 +78,6 @@ public class ActionInstance {
     public boolean getActionTyoe(int typeNum){
         switch (typeNum){
             case TYPE_NEED_RESPOND:
-
                 return type[0];
 
             case TYPE_PARTICLE_AFTER_REWARD:

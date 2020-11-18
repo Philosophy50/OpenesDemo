@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.util.Log;
 
 
 import java.util.ArrayList;
@@ -85,6 +86,8 @@ public class BitmapUtil {
                 bNum++;
         }
         Bitmap bitmap = Bitmap.createBitmap(WIDTH, FontHeight * (mBreakString.size() + bNum), Bitmap.Config.ARGB_8888);//ALPHA_8纯黑，只有透明度的更改，8888有RGB有Alpha，565只有RGB
+        Log.w("test_wl","bBBIIM:"+bitmap.getWidth()+"/"+bitmap.getHeight());
+
         for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
                 bitmap.setPixel(i, j, Color.argb(0.6f,1.0f,1.0f,1.0f));
