@@ -85,9 +85,6 @@ public class HelloTriangle extends Activity
       Toast.makeText(HelloTriangle.this,"x:"+x+" y:"+y,Toast.LENGTH_SHORT).show();
 
       mGLSurfaceView = new GLSurfaceView ( this );
-      mGLSurfaceView.setBackgroundResource(R.drawable.b_bg);
-      mGLSurfaceView.setZOrderOnTop(true);
-      mGLSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 
 
 
@@ -135,6 +132,8 @@ public class HelloTriangle extends Activity
          finish();
       }
       setContentView ( mGLSurfaceView );
+
+
 
    }
 

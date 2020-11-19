@@ -44,6 +44,8 @@ public class ActionInstance {
             }
         };
         timer.schedule(timerTask,0,200);
+
+        
     }
 
 
@@ -99,4 +101,10 @@ public class ActionInstance {
     public int getScore(){
         return scoreNum;
     }
+
+    float timeup ;
+    public void setPlayTimeUp(float speed){ //跑步速度 = 播放速度
+        timeup = speed;
+    }
+
 }

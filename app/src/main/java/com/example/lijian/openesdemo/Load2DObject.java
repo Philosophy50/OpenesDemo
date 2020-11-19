@@ -181,10 +181,8 @@ public class Load2DObject {
     float endfloat = startfloat + singlefloat*100;
 
     public void setpercent(float param){
-        if(testfloat>= endfloat){
-            testfloat = startfloat;//9f;   //这个是x min
-        }
-        testfloat =testfloat + singlefloat *10f ;//+9f;
+
+        testfloat = startfloat + singlefloat * param ;//+9f;
     }
 
     public void setParamA(){

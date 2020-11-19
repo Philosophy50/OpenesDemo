@@ -271,7 +271,7 @@ public class X2DObject {
 
         long curTime = SystemClock.uptimeMillis();
         long elapsedTime = curTime - mLastTime;
-        float deltaTime = elapsedTime / 1000.0f;
+        float deltaTime = (float)elapsedTime / 1000.0f;
         mLastTime = curTime;
 
         ESTransform perspective = new ESTransform();//视角矩阵
@@ -297,7 +297,7 @@ public class X2DObject {
                 if(delayRecordTime == 0){
                     delayRecordTime = SystemClock.elapsedRealtime();
                 }
-                if((SystemClock.elapsedRealtime() - delayRecordTime )> delayMoveTime){
+                if(  SystemClock.elapsedRealtime() - delayRecordTime > delayMoveTime){
                     isNeedMove = true;
                 }else{
                     isNeedMove = false;
@@ -307,12 +307,8 @@ public class X2DObject {
             if(isNeedMove) {
                 xVariation +=    (x_destination - x_offset)/(moveRate)  *timeUp;
                 yVariation +=   (y_destination-y_offset)/(moveRate)   *timeUp;
-                if(zBoolean) {
-
-                        if(zVariation<=zMax) {
-                            zVariation += (zDistance / ((moveRate) * 1.78)) * timeUp;
-                        }
-
+                if(zBoolean && zVariation<=zMax) {
+                      zVariation += (zDistance / ((moveRate) * 1.78)) * timeUp;
                 }
 
                 if(isXPositive && xVariation >= x_destination ) {//TODO 精度
@@ -324,7 +320,6 @@ public class X2DObject {
                         }else{
                             if(needScore){
                                 ActionInstance.getInstance().setActionType(1,false);
-
                                 ActionInstance.getInstance().addScoreNum();
                             }
                             if(showLandMark){
@@ -337,7 +332,7 @@ public class X2DObject {
                             xVariation = x_offset;  //循环
                             yVariation = y_offset;
                             zoomMultiples = minZoom;
-                                zVariation = -20.0f;
+                             zVariation = -20.0f;
 
                         }
                     }else if(!isYPositive && yVariation <= y_destination){
@@ -364,7 +359,6 @@ public class X2DObject {
                                 zVariation = -20.0f;
 
                         }
-                        //
                     }
                 }else if(!isXPositive && xVariation <= x_destination){ //TODO 精度
                     if(isYPositive && yVariation >= y_destination){
@@ -388,8 +382,7 @@ public class X2DObject {
                             xVariation = x_offset;//循环
                             yVariation = y_offset;
                             zoomMultiples = minZoom;
-                                zVariation = -20.0f;
-
+                            zVariation = -20.0f;
                         }
                         // xVariation = x_offset;
                         //yVariation = y_offset;

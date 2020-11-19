@@ -45,7 +45,6 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
    private int verticesIndex;
    private int textureIndex;
 
-   private static String TAG = "HelloTriangleRenderer";
    private final float[] mVerticesData =
            { -4.0f, 4.0f, 0.0f,
                    -4.0f, -4.0f, 0.0f,
@@ -114,7 +113,6 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       GLES30.glGetShaderiv ( shader, GLES30.GL_COMPILE_STATUS, compiled, 0 );
       if ( compiled[0] == 0 )
       {
-         Log.e ( TAG, GLES30.glGetShaderInfoLog ( shader ) );
          GLES30.glDeleteShader ( shader );
          return 0;
       }
