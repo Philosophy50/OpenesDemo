@@ -35,6 +35,7 @@ package com.example.lijian.openesdemo;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -45,6 +46,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.lijian.openesdemo.SEvice.MyService;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -78,6 +81,9 @@ public class HelloTriangle extends Activity
       super.onCreate ( savedInstanceState );
 
 
+       Intent mm = new Intent(HelloTriangle.this, MyService.class);
+       startService(mm);
+      ActionInstance.getInstance().setContext(this);
       Point outSize = new Point();
       getWindowManager().getDefaultDisplay().getRealSize(outSize);
       int x = outSize.x;

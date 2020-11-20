@@ -1,8 +1,10 @@
 package com.example.lijian.openesdemo.SEvice;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
@@ -11,9 +13,18 @@ import android.view.Gravity;
 import android.view.WindowManager;
 
 import com.example.lijian.openesdemo.ParticleSystemRenderer;
+import com.example.lijian.openesdemo.ServiceRender;
 
 public class MyService extends Service {
     GLSurfaceView mySurfaceView;
+    ServiceRender mServiceRender;
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mServiceRender.resetAchievement();
+        }
+    };
     public MyService() {
 
 
@@ -22,11 +33,13 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        mServiceRender = new ServiceRender(this);
+
         mySurfaceView = new GLSurfaceView(this);
         mySurfaceView.setEGLContextClientVersion(3);
         mySurfaceView.setEGLConfigChooser(8,8,8,8,16,0);
         mySurfaceView.getHolder().setFormat(PixelFormat.TRANSPARENT);
-        mySurfaceView.setRenderer(new ParticleSystemRenderer(this)); //待定
+        mySurfaceView.setRenderer(mServiceRender); //待定
         mySurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
 
@@ -46,6 +59,11 @@ public class MyService extends Service {
         params.setTitle("ViewService");
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         wm.addView(mySurfaceView , params);
+
+        IntentFilter inFilter = new IntentFilter();
+        inFilter.addAction("com.opngles");
+
+        registerReceiver(broadcastReceiver,inFilter);
     }
 
     @Override
@@ -54,4 +72,10 @@ public class MyService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+
+    }
 }

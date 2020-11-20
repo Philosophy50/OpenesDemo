@@ -1,6 +1,8 @@
 package com.example.lijian.openesdemo;
 
 import android.app.Notification;
+import android.content.Context;
+import android.content.Intent;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -24,7 +26,7 @@ public class ActionInstance {
     private boolean isRun = true;
     private int temp;
     private int conserved = 0;
-
+    Context mContext;
     private ActionInstance(){
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -45,10 +47,12 @@ public class ActionInstance {
         };
         timer.schedule(timerTask,0,200);
 
-        
+
     }
 
-
+    public void setContext(Context context){
+        mContext = context;
+    }
     public synchronized static ActionInstance getInstance() {
         if (getActionInstance == null) {
             getActionInstance = new ActionInstance();
@@ -107,4 +111,19 @@ public class ActionInstance {
         timeup = speed;
     }
 
+
+
+    public void showAchievementMonth(){
+
+    }
+    public void showAchievementYear(){
+
+    }
+    public void showAchievementAll(){
+
+    }
+    public void resetAchievement(){
+        Intent nn = new Intent("com.opngles");
+        mContext.sendBroadcast(nn);
+    }
 }
