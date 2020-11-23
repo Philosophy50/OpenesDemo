@@ -123,7 +123,12 @@ public class ActionInstance {
 
     }
     public void resetAchievement(){
-        Intent nn = new Intent("com.opngles");
+        Intent nn = new Intent("com.opngles.reset");
         mContext.sendBroadcast(nn);
+    }
+
+    public void enterAchievement(){
+        Intent nn1 = new Intent("com.opngles.enter");
+        mContext.sendBroadcast(nn1);
     }
 }

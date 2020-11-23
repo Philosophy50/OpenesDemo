@@ -27,6 +27,14 @@ public class MyService extends Service {
             mServiceRender.resetAchievement();
         }
     };
+
+    BroadcastReceiver broadcastReceiver1 = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            mServiceRender.enterAll();
+        }
+    };
     public MyService() {
 
 
@@ -62,10 +70,18 @@ public class MyService extends Service {
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         wm.addView(mySurfaceView , params);
 
+
+
+
         IntentFilter inFilter = new IntentFilter();
-        inFilter.addAction("com.opngles");
+        inFilter.addAction("com.opngles.reset");
 
         registerReceiver(broadcastReceiver,inFilter);
+
+        IntentFilter inFilter1 = new IntentFilter();
+        inFilter1.addAction("com.opngles.enter");
+
+        registerReceiver(broadcastReceiver1,inFilter1);
     }
 
     @Override
@@ -78,6 +94,6 @@ public class MyService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
-
+        unregisterReceiver(   broadcastReceiver1);
     }
 }
