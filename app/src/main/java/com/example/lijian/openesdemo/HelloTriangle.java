@@ -81,9 +81,10 @@ public class HelloTriangle extends Activity
       super.onCreate ( savedInstanceState );
 
 
-       Intent mm = new Intent(HelloTriangle.this, MyService.class);
-       startService(mm);
+
       ActionInstance.getInstance().setContext(this);
+      Intent mm = new Intent(HelloTriangle.this, MyService.class);
+      startService(mm);
       Point outSize = new Point();
       getWindowManager().getDefaultDisplay().getRealSize(outSize);
       int x = outSize.x;

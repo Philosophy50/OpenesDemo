@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 
 import com.example.lijian.openesdemo.ESUtils.ESShader;
 
@@ -156,13 +157,16 @@ public class ServiceRender implements GLSurfaceView.Renderer {
     private int mHeight;
     @Override
     public void onDrawFrame(GL10 gl) {
-        mAchievementBGm.drawSelf();
-        mAchievementBGy.drawSelf();
-        mAchievementBGa.drawSelf();
+        GLES30.glClear ( GLES30.GL_COLOR_BUFFER_BIT );
+        GLES30.glViewport ( 0, 0, mWidth, mHeight );
 
-        mAchievementMonth.drawSelf();
-        mAchievementYear.drawSelf();
-        mAchievementAll.drawSelf();
+            mAchievementBGm.drawSelf();
+            mAchievementBGy.drawSelf();
+            mAchievementBGa.drawSelf();
+
+            mAchievementMonth.drawSelf();
+            mAchievementYear.drawSelf();
+            mAchievementAll.drawSelf();
 
 
 
@@ -170,6 +174,17 @@ public class ServiceRender implements GLSurfaceView.Renderer {
 
     public void resetAchievement(){
 
+
+        mAchievementBGm.manualStop(true);
+
+
+
+        mAchievementBGy.manualStop(true);
+      mAchievementBGa.manualStop(true);
+       mAchievementMonth.manualStop(true);
+
+        mAchievementAll.manualStop(true);
+          mAchievementYear.manualStop(true);
         mAchievementBGm.modifyOffset(9.8f,-14f);
         mAchievementBGy.modifyOffset(8.4f,-14f);
         mAchievementBGa.modifyOffset(7f,-14f);

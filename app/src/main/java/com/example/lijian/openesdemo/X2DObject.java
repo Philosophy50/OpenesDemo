@@ -181,7 +181,7 @@ public class X2DObject {
     public boolean getStopState(){
         return isStop;
     }
-
+    public boolean getNeedRespond(){return needRespond;}
     boolean daoweile = true;
     public void drawSelf(){
 
@@ -191,6 +191,7 @@ public class X2DObject {
                 setVariation(x_offset, y_offset);
                 isStop = false;   //转一下停止绘图的判断
             }
+            Log.w("test_wl",this+" return ");
             return;
         }
         if( needRespond   ){

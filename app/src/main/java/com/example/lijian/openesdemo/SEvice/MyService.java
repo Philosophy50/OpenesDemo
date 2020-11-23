@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
 
@@ -22,6 +23,7 @@ public class MyService extends Service {
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             mServiceRender.resetAchievement();
         }
     };
