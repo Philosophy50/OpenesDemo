@@ -1,9 +1,6 @@
 package com.example.lijian.openesdemo;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
@@ -90,12 +87,13 @@ public class ServiceRender implements GLSurfaceView.Renderer {
 
     }
 
-    private  int programObject2;
+    private  int programObject2,programBezier; //TODO
     private int textureAchievementBG,textureAchievementMonth,textureAchievementYear,textureAchievementAll;
     private X2DObject mAchievementBGm,mAchievementBGy,mAchievementBGa,mAchievementMonth,mAchievementYear,mAchievementAll;
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         programObject2 =  ESShader.loadProgramFromAsset(mContext,"shaders/vertex_2d.sh", "shaders/frag_2d.sh");
+        programBezier = ESShader.loadProgramFromAsset(mContext,"shaders/vertex_bezier.sh","shaders/frag_bezier.sh");//TODO
         textureAchievementBG   = ESShader.loadTextureFromAsset(mContext,"textures/c_bg.png");
         textureAchievementMonth = ESShader.loadTextureFromAsset(mContext,"textures/c_month1.png");
         textureAchievementYear  = ESShader.loadTextureFromAsset(mContext,"textures/c_year1.png");
@@ -274,21 +272,6 @@ public class ServiceRender implements GLSurfaceView.Renderer {
         LeaveAchievementMonth();
         LeaveAchievementYear();
         LeaveAchievementAll();
-        /*
-        mAchievementBGm.manualStop(true);
-        mAchievementBGy.manualStop(true);
-        mAchievementBGa.manualStop(true);
-        mAchievementMonth.manualStop(true);
-        mAchievementAll.manualStop(true);
-        mAchievementYear.manualStop(true);
-
-        mAchievementBGm.modifyOffset(9.8f,-14f);
-        mAchievementBGy.modifyOffset(8.4f,-14f);
-        mAchievementBGa.modifyOffset(7f,-14f);
-        mAchievementMonth.modifyOffset(9.8f,-14f);
-        mAchievementYear.modifyOffset(8.4f,-14f);
-        mAchievementAll.modifyOffset(7.3f,-14f);
-*/
 
     }
 

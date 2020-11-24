@@ -212,6 +212,7 @@ public class X2DObject {
         GLES30.glUseProgram(mProgramId);
         GLES30.glVertexAttribPointer(mVertexPositionIndexId,3,GLES30.GL_FLOAT,false,0,mVertexBuffer);//声明顶点位置画笔
         GLES30.glVertexAttribPointer(mTexCoorIndexId,2,GLES30.GL_FLOAT,false,0,mTexCoorBuffer);      //声明纹理位置画笔
+
         GLES30.glEnableVertexAttribArray(mVertexPositionIndexId);//启用顶点位置数组
         GLES30.glEnableVertexAttribArray(mTexCoorIndexId);      //启用纹理位置数组
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0);              //启用纹理编号0
