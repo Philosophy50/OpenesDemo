@@ -15,11 +15,8 @@ public class BezierActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bezier);
         glview = (GLSurfaceView) findViewById(R.id.glsurfaceview);
         brender = new BezierRenderer(this);
-
         glview.setEGLContextClientVersion ( 3 );//3
-        //设置渲染实现
         glview.setRenderer ( brender );
-        //创建和调用requestRender()时才会刷新
         glview.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
     }
 }

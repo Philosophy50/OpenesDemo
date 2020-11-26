@@ -1,6 +1,7 @@
 package com.example.lijian.openesdemo.NewBezier;
 
 import android.content.Context;
+import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
@@ -11,14 +12,14 @@ import java.util.Random;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
-import static android.opengl.GLES20.GL_DEPTH_BUFFER_BIT;
-import static android.opengl.GLES20.glClear;
+import static android.opengl.GLES30.GL_COLOR_BUFFER_BIT;
+import static android.opengl.GLES30.GL_DEPTH_BUFFER_BIT;
+import static android.opengl.GLES30.glClear;
 
 public class BezierRenderer implements GLSurfaceView.Renderer {
 
     private final Context mContext;
-    private BezierCurve mBezierCurve;
+    private BezierCurve mBezierCurve,mBezierCurve2,mBezierCurve3;
     private Random mRandom = new Random();
 
 
@@ -33,11 +34,25 @@ public class BezierRenderer implements GLSurfaceView.Renderer {
         mContext = context;
     }
 
-    private float num = 0f;
+    private float num = 100f;
     private int delta = 200;
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         mBezierCurve = new BezierCurve(mContext);
+        mBezierCurve.setAmp((float) (3.0 * (num % delta) / delta));
+        mBezierCurve.setStartEndPoints(1f,0f,0f,0.6f);
+        mBezierCurve.setControlPoints(1f,0.3f ,0.3f  ,0.6f);
+
+        mBezierCurve2 = new BezierCurve(mContext);
+        mBezierCurve2.setAmp((float) (3.0 * (num % delta) / delta));
+        mBezierCurve2.setStartEndPoints(0f,0f,1f,0f);
+        mBezierCurve2.setControlPoints(0.3f,-0.5f,1f,-0.5f);
+
+        mBezierCurve3 = new BezierCurve(mContext);
+        mBezierCurve3.setAmp((float) (3.0 * (num % delta) / delta));
+        mBezierCurve3.setStartEndPoints(0f,0f,0f,0.6f);
+        mBezierCurve3.setControlPoints(-0.6f,0.2f,-0.6f,0.6f);
+
         Matrix.setIdentityM(mModelMatrix, 0);
 
     }
@@ -62,17 +77,17 @@ public class BezierRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
-        num++;
 
-        mBezierCurve.setAmp((float) (3.0 * (num % delta) / delta));
-
-
-//        mBezierCurve.draw();
+        GLES30.glClearColor(0.0f, 0f, 0f, 1f);
+        GLES30.glClear(GLES30.GL_DEPTH_BUFFER_BIT | GLES30.GL_COLOR_BUFFER_BIT);
+        //num++;
 
         float[] resultMatrix = new float[16];
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         Matrix.multiplyMM(resultMatrix, 0, mMVPMatrix, 0, mModelMatrix, 0);
 
         mBezierCurve.draw(resultMatrix);
+        mBezierCurve2.draw(resultMatrix);
+        mBezierCurve3.draw(resultMatrix);
     }
 }

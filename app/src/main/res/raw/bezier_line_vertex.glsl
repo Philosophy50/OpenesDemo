@@ -62,12 +62,12 @@ void main() {
 
     float t = aData;
 
-    vec2 point = fun3(p0, p1, p2, p3, t);
+    vec2 point = fun2(p0, p1, p2, p3, t);
 
     pos.xy = point;
 
     gl_Position = u_MVPMatrix * pos;
 
-    gl_PointSize = 20.0;
+    gl_PointSize = 0.5;
 }
 

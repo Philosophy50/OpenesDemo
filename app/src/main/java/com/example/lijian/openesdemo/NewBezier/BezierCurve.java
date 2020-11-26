@@ -1,18 +1,21 @@
 package com.example.lijian.openesdemo.NewBezier;
 
 import android.content.Context;
-import android.opengl.GLES20;
+import android.opengl.GLES30;
+import android.opengl.GLES30;
 
 
 import com.example.lijian.openesdemo.R;
 
 import java.nio.FloatBuffer;
 
-import static android.opengl.GLES20.glGetAttribLocation;
-import static android.opengl.GLES20.glGetUniformLocation;
-import static android.opengl.GLES20.glUniform1f;
-import static android.opengl.GLES20.glUniform4f;
-import static android.opengl.GLES20.glUseProgram;
+import static android.opengl.GLES10.GL_LINE_SMOOTH;
+import static android.opengl.GLES10.GL_MULTISAMPLE;
+import static android.opengl.GLES30.glGetAttribLocation;
+import static android.opengl.GLES30.glGetUniformLocation;
+import static android.opengl.GLES30.glUniform1f;
+import static android.opengl.GLES30.glUniform4f;
+import static android.opengl.GLES30.glUseProgram;
 
 public class BezierCurve {
 
@@ -83,13 +86,13 @@ public class BezierCurve {
         mBuffer = Buffers.makeInterleavedBuffer(mDataPoints, Const.NUM_POINTS);
 
         final int buffers[] = new int[1];
-        GLES20.glGenBuffers(1, buffers, 0);
+        GLES30.glGenBuffers(1, buffers, 0);
 
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
-        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, mBuffer.capacity() * Const.BYTES_PER_FLOAT,
-                mBuffer, GLES20.GL_STATIC_DRAW);
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, buffers[0]);
+        GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, mBuffer.capacity() * Const.BYTES_PER_FLOAT,
+                mBuffer, GLES30.GL_STATIC_DRAW);
 
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
 
         mBufferId = buffers[0];
 
@@ -98,8 +101,8 @@ public class BezierCurve {
 
 
     public void draw() {
-        GLES20.glClearColor(0.0f, 0f, 0f, 1f);
-        GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
+        GLES30.glClearColor(0.0f, 0f, 0f, 1f);
+        GLES30.glClear(GLES30.GL_DEPTH_BUFFER_BIT | GLES30.GL_COLOR_BUFFER_BIT);
 
         glUniform4f(mStartEndHandle,
                 mStartEndPoints[0],
@@ -117,25 +120,24 @@ public class BezierCurve {
 
         final int stride = Const.BYTES_PER_FLOAT * Const.T_DATA_SIZE;
 
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mBufferId);
-        GLES20.glEnableVertexAttribArray(mDataHandle);
-        GLES20.glVertexAttribPointer(mDataHandle,
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mBufferId);
+        GLES30.glEnableVertexAttribArray(mDataHandle);
+        GLES30.glVertexAttribPointer(mDataHandle,
                 Const.T_DATA_SIZE,
-                GLES20.GL_FLOAT,
+                GLES30.GL_FLOAT,
                 false,
                 stride,
                 0);
 
         // Clear the currently bound buffer (so future OpenGL calls do not use this buffer).
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
 
-        GLES20.glDrawArrays(GLES20.GL_POINTS, 0, Const.NUM_POINTS * Const.POINTS_PER_TRIANGLE);
+        GLES30.glDrawArrays(GLES30.GL_POINTS, 0, Const.NUM_POINTS * Const.POINTS_PER_TRIANGLE);
 
     }
 
     public void draw(float[] mvp) {
-        GLES20.glClearColor(0.0f, 0f, 0f, 1f);
-        GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
+        GLES30.glEnable(GL_MULTISAMPLE);
 
         glUniform4f(mStartEndHandle,
                 mStartEndPoints[0],
@@ -153,48 +155,54 @@ public class BezierCurve {
 
         final int stride = Const.BYTES_PER_FLOAT * Const.T_DATA_SIZE;
 
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mBufferId);
-        GLES20.glEnableVertexAttribArray(mDataHandle);
-        GLES20.glVertexAttribPointer(mDataHandle,
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mBufferId);
+        GLES30.glEnableVertexAttribArray(mDataHandle);
+        GLES30.glVertexAttribPointer(mDataHandle,
                 Const.T_DATA_SIZE,
-                GLES20.GL_FLOAT,
+                GLES30.GL_FLOAT,
                 false,
                 stride,
                 0);
 
         // Clear the currently bound buffer (so future OpenGL calls do not use this buffer).
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
 
-        GLES20.glUniformMatrix4fv(mMvpHandle, 1, false, mvp, 0);
+        GLES30.glUniformMatrix4fv(mMvpHandle, 1, false, mvp, 0);
 
-        GLES20.glDrawArrays(GLES20.GL_POINTS, 0, Const.NUM_POINTS * Const.POINTS_PER_TRIANGLE);
+        GLES30.glDrawArrays(GLES30.GL_POINTS, 0, Const.NUM_POINTS * Const.POINTS_PER_TRIANGLE);
 
     }
 
     @SuppressWarnings("UnnecessaryLocalVariable")
     private float[] genTData() {
-        //  1---2
-        //  | /
-        //  3
+
         float[] tData = new float[Const.POINTS_PER_TRIANGLE * Const.T_DATA_SIZE * Const.NUM_POINTS];
 
         float step = 1f / (float) tData.length * 2f;
 
         for (int i = 0; i < tData.length; i += Const.POINTS_PER_TRIANGLE) {
             float t = (float) i / (float) tData.length;
-            float t1 = (float) (i + 1) / (float) tData.length;
-            float t2 = (float) (i + 2) / (float) tData.length;
-
             tData[i] = t;
-            tData[i + 1] = t1;
-            tData[i + 2] = t2;
 
         }
-
         return tData;
     }
 
     public void setAmp(float amp) {
         mAmps = amp;
+    }
+
+    public void setStartEndPoints(float sX,float sY,float eX,float eY){
+        mStartEndPoints[0]=sX;
+        mStartEndPoints[1]=sY;
+        mStartEndPoints[2]=eX;
+        mStartEndPoints[3]=eY;
+    }
+    public void setControlPoints(float X1,float Y1,float X2,float Y2){
+        mControlPoints[0]=X1;
+        mControlPoints[1]=Y1;
+        mControlPoints[2]=X2;
+        mControlPoints[3]=Y2;
+
     }
 }

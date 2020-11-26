@@ -18,7 +18,8 @@ public class BezierActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bezier);
         mBezierRenderer = new BezierRenderer(this);
         mGLSurfaceView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
-        mGLSurfaceView.setEGLContextClientVersion(2);
+        mGLSurfaceView.setEGLContextClientVersion(3);
+        mGLSurfaceView.setEGLConfigChooser(new MyConfigChooser());
         mGLSurfaceView.setRenderer(mBezierRenderer);
         mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
     }
