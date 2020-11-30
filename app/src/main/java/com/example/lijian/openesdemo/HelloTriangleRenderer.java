@@ -425,8 +425,7 @@ public class HelloTriangleRenderer implements GLSurfaceView.Renderer
       GLES30.glUniform1i ( mBaseMapLoc, 0 );
 
        // Load the MVP matrix
-      GLES30.glUniformMatrix4fv ( mMVPLoc, 1, false,
-              mMVPMatrix.getAsFloatBuffer() );
+//      GLES30.glUniformMatrix4fv ( mMVPLoc, 1, false,     mMVPMatrix.getAsFloatBuffer() );
 
       if(ActionInstance.getInstance().getRewardTrigger()){
          ActionInstance.getInstance().setRewardTrigger();

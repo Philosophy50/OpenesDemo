@@ -66,6 +66,9 @@ public class Load2DObject {
     private boolean issmall = false;
     private float zMax = 0.0f;                              //z轴的最高值
 
+    ESTransform perspective = new ESTransform();//视角矩阵
+    ESTransform modelview = new ESTransform(); //模型矩阵
+
     public Load2DObject(float x , float y ,float x_offset,float y_offset,float picWidth,float picHeight,int texure,int programId){
         this.x = x;
         this.y = y;
@@ -109,6 +112,12 @@ public class Load2DObject {
                 .asFloatBuffer();
         mTexCoorBuffer.put(texCoor).position(0);
 
+        float aspect;
+        // Compute the window aspect ratio
+        aspect = ( float ) 1024 / ( float ) 600;  //屏幕比例,测试用3266,测试写死
+        // Generate a perspective matrix with a 60 degree FOV
+        perspective.matrixLoadIdentity();
+        perspective.perspective ( 60.0f, aspect, 1.0f, 20.0f );
     }
 
     private void initShader() {//初始化着色器
@@ -168,7 +177,7 @@ public class Load2DObject {
         GLES30.glUniform1f(x2Handle,startfloat);
 
 
-        GLES30.glUniformMatrix4fv ( mMVPMatrixIndexId, 1, false, mMVPMatrix.getAsFloatBuffer() );
+        GLES30.glUniformMatrix4fv ( mMVPMatrixIndexId, 1, false,mMVPMatrix.get(),0);// mMVPMatrix.getAsFloatBuffer() );
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_STRIP, 0, 6);//6 画顶点数量
 
         GLES30.glDisable(GLES30.GL_BLEND);
@@ -200,9 +209,7 @@ public class Load2DObject {
         float deltaTime = elapsedTime / 1000.0f;
         mLastTime = curTime;
 
-        ESTransform perspective = new ESTransform();//视角矩阵
-        ESTransform modelview = new ESTransform(); //模型矩阵
-        float aspect;
+
 
         // Compute a rotation angle based on time to rotate the cube
 
@@ -336,12 +343,7 @@ public class Load2DObject {
                 mAngle -= 360.0f;
             }
         }
-        // Compute the window aspect ratio
-        aspect = ( float ) 1024 / ( float ) 600;  //屏幕比例,测试用3266,测试写死
 
-        // Generate a perspective matrix with a 60 degree FOV
-        perspective.matrixLoadIdentity();
-        perspective.perspective ( 60.0f, aspect, 1.0f, 20.0f );
 
         // Generate a model view matrix to rotate/translate the cube
         modelview.matrixLoadIdentity();

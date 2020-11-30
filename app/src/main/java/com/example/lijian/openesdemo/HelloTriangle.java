@@ -102,7 +102,6 @@ public class HelloTriangle extends Activity
             float x = event.getRawX();//获取触控点的坐标  ,相对于widget的左上角，getRawX是相对于屏幕的左上角
             float y = event.getRawY();
             Log.w("test_wl","MotionEvent_Down:x--"+x+" y--"+y+" Function:useless");
-
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                case MotionEvent.ACTION_DOWN:
                   if( x > leftPopWindow && x < rightPopWindow && y>topPopWindow && y < bottomPopWindow){

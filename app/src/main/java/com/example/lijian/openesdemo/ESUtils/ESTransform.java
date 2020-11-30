@@ -46,12 +46,17 @@ import java.nio.FloatBuffer;
 //模型--视图变换函数矩阵
 public class ESTransform
 {
-   public ESTransform()
-   {
-      mMatrixFloatBuffer = ByteBuffer.allocateDirect ( 16 * 4 )
-                           .order ( ByteOrder.nativeOrder() ).asFloatBuffer();
-   }
-
+//   public ESTransform()
+//   {
+//      mMatrixFloatBuffer = ByteBuffer.allocateDirect ( 16 * 4 )
+//                           .order ( ByteOrder.nativeOrder() ).asFloatBuffer();
+//   }
+//   private FloatBuffer mMatrixFloatBuffer;
+//   public FloatBuffer getAsFloatBuffer()
+//   {
+//      mMatrixFloatBuffer.put ( mMatrix ).position ( 0 );
+//      return mMatrixFloatBuffer;
+//   }
    /**
     * 将矩阵乘以比例缩放
     * @param sx x轴上的比例缩放因子
@@ -103,6 +108,8 @@ public class ESTransform
     * @param y 指定向量y的坐标
     * @param z 指定向量z的坐标
     */
+   float[] rotMat = new float[16];
+
    public void rotate ( float angle, float x, float y, float z )
    {
       float sinAngle, cosAngle;
@@ -115,7 +122,6 @@ public class ESTransform
       {
          float xx, yy, zz, xy, yz, zx, xs, ys, zs;
          float oneMinusCos;
-         float[] rotMat = new float[16];
 
          x /= mag;
          y /= mag;
@@ -249,9 +255,9 @@ public class ESTransform
     * @param srcA 输入矩阵A
     * @param srcB 输入矩阵B
     */
+   float[] tmp = new float[16];
    public void matrixMultiply ( float[] srcA, float[] srcB )
    {
-      float[] tmp = new float[16];
       int i;
 
       for ( i = 0; i < 4; i++ )
@@ -314,11 +320,6 @@ public class ESTransform
       return result;
    }
 
-   public FloatBuffer getAsFloatBuffer()
-   {
-      mMatrixFloatBuffer.put ( mMatrix ).position ( 0 );
-      return mMatrixFloatBuffer;
-   }
 
    public float[] get()
    {
@@ -326,6 +327,6 @@ public class ESTransform
    }
 
    private float[] mMatrix = new float[16];
-   private FloatBuffer mMatrixFloatBuffer;
+
 
 }

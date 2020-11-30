@@ -37,6 +37,7 @@ public class Particle2DObject {
     private boolean isInitShader = false;  //判断是否初始化过两个着色器
 
     private long mLastTime = 0;
+    float [] color = new float[4];
 
     public Particle2DObject(int texure,int programId){
         this.mTextureId = texure;
@@ -175,7 +176,7 @@ public class Particle2DObject {
         if ( mTime >= 1.0f )
         {
             //float [] centerPos = new float[3];
-            float [] color = new float[4];
+
             mTime = 0.0f;
 
             ActionInstance.getInstance().setActionType(2,false);

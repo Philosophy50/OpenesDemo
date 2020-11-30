@@ -70,6 +70,9 @@ public class X2DObject {
 
     private final float moveRate = 500;           //调试用移动快慢的值
 
+    ESTransform perspective = new ESTransform();//视角矩阵
+    ESTransform modelview = new ESTransform(); //模型矩阵
+
     public void  setVariation(float param1,float param2){
         xVariation = param1;
         yVariation = param2;
@@ -156,6 +159,13 @@ public class X2DObject {
                 .asFloatBuffer();
         mTexCoorBuffer.put(texCoor).position(0);
 
+
+        float aspect;
+        // Compute the window aspect ratio
+        aspect = ( float ) 1024 / ( float ) 600;  //屏幕比例,测试用3266,测试写死
+        // Generate a perspective matrix with a 60 degree FOV
+        perspective.matrixLoadIdentity();
+        perspective.perspective ( 60.0f, aspect, 1.0f, 20.0f );
     }
 
     
@@ -191,7 +201,6 @@ public class X2DObject {
                 setVariation(x_offset, y_offset);
                 isStop = false;   //转一下停止绘图的判断
             }
-            Log.w("test_wl",this+" return ");
             return;
         }
         if( needRespond   ){
@@ -219,7 +228,7 @@ public class X2DObject {
         GLES30.glBindTexture(GLES20.GL_TEXTURE_2D,mTextureId);   //绑定纹理图片
 
         GLES30.glUniform1f(apttId,changeAlpha);
-        GLES30.glUniformMatrix4fv ( mMVPMatrixIndexId, 1, false, mMVPMatrix.getAsFloatBuffer() );
+        GLES30.glUniformMatrix4fv ( mMVPMatrixIndexId, 1, false, mMVPMatrix.get(),0);//getAsFloatBuffer() );
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_STRIP, 0, 6);//6 画顶点数量
 
         GLES30.glDisable(GLES30.GL_BLEND);
@@ -276,9 +285,7 @@ public class X2DObject {
         float deltaTime = (float)elapsedTime / 1000.0f;
         mLastTime = curTime;
 
-        ESTransform perspective = new ESTransform();//视角矩阵
-        ESTransform modelview = new ESTransform(); //模型矩阵
-        float aspect;
+
 
         // Compute a rotation angle based on time to rotate the cube
         if(isStartPictureMove) {
@@ -304,7 +311,6 @@ public class X2DObject {
                 }else{
                     isNeedMove = false;
                 }
-                Log.w("test_wl","isNeedMove:"+isNeedMove);
             }
             if(isNeedMove) {
                 xVariation +=    (x_destination - x_offset)/(moveRate)  *timeUp;
@@ -491,12 +497,7 @@ public class X2DObject {
                 mAngle -= 360.0f;
             }
         }
-        // Compute the window aspect ratio
-        aspect = ( float ) 1024 / ( float ) 600;  //屏幕比例,测试用3266,测试写死
 
-        // Generate a perspective matrix with a 60 degree FOV
-        perspective.matrixLoadIdentity();
-        perspective.perspective ( 60.0f, aspect, 1.0f, 20.0f );
 
         // Generate a model view matrix to rotate/translate the cube
         modelview.matrixLoadIdentity();
