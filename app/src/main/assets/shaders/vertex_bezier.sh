@@ -1,4 +1,3 @@
-//顶点着色器
 #version 300 es
 layout(location = 0) in float a_tData;//t 取值数组
 uniform vec4 u_StartEndData;//起始点和终止点

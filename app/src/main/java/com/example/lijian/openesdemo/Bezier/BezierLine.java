@@ -4,7 +4,7 @@ import android.content.Context;
 import android.opengl.GLES30;
 import android.util.Log;
 
-import com.example.lijian.openesdemo.ESUtils.ESShader;
+import com.example.lijian.openesdemo.utils.ESUtils.ESShader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;

@@ -1,4 +1,4 @@
-package com.example.lijian.openesdemo.String2bitmap;
+package com.example.lijian.openesdemo.utils.String2Bitmap;
 
 import android.support.annotation.Nullable;
 

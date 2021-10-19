@@ -5,16 +5,13 @@ import android.opengl.GLES30;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.example.lijian.openesdemo.ESUtils.ESTransform;
+import com.example.lijian.openesdemo.utils.ESUtils.ESTransform;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-/**
- * Created by lijian on 2020/10/28.
- *
- */
+
 
 public class X2DObject {
     private FloatBuffer mVertexBuffer;                 //顶点坐标数据缓冲
@@ -289,10 +286,7 @@ public class X2DObject {
 
         // Compute a rotation angle based on time to rotate the cube
         if(isStartPictureMove) {
-
-
             if(isNeedAlpha) {
-
                  if (isAlphaUp  ) {
                     if(changeAlpha<alphaMax) {
                         changeAlpha += 0.01f;
@@ -539,7 +533,17 @@ public class X2DObject {
     }
 
     public void setTimeUp(float param){
+        if(param >18f || param <0f){
+            Log.w("test_wl","setTimeUp param illegal:param = "+param);
+            return;
+        }
         timeUp = param;
+    }
+    public void addTimeUp(){
+        timeUp = (  (timeUp + 0.1f)< 18 )?(timeUp + 0.1f): timeUp;
+    }
+    public void decTimeUp(){
+        timeUp = (  (timeUp - 0.1f)>0 )?(timeUp - 0.1f): timeUp;
     }
 
     public void setZscale(float zDis,float timeup,float Zmax){
@@ -548,7 +552,7 @@ public class X2DObject {
         timeUp = timeup;
         zMax = Zmax;
     }
-    public void setzSSSS(){
+    public void resetZVariation(){
         zVariation = -20f;
     }
 

@@ -30,7 +30,6 @@
 //            http://my.safaribooksonline.com/book/animation-and-3d/9780133440133
 //
 
-// ParticleSystem
 //
 //    This is an example that demonstrates rendering a particle system
 //    using a vertex shader and point sprites.
@@ -56,7 +55,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.os.SystemClock;
 
-import com.example.lijian.openesdemo.ESUtils.ESShader;
+import com.example.lijian.openesdemo.utils.ESUtils.ESShader;
 
 public class ParticleSystemRenderer implements GLSurfaceView.Renderer
 {
@@ -155,8 +154,6 @@ public class ParticleSystemRenderer implements GLSurfaceView.Renderer
          "{                                                    \n" +
          "  if ( u_time <= a_lifetime )                        \n" +
          "  {                                                  \n" +
-
-
          "    gl_Position.xyz = a_startPosition +              \n" +
                  "        u_time *     a_endPosition;  \n"+
          "    gl_Position.w = 1.0;                             \n" +

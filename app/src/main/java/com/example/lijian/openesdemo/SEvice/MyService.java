@@ -13,30 +13,51 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
 
+
 import com.example.lijian.openesdemo.ParticleSystemRenderer;
 import com.example.lijian.openesdemo.ServiceRender;
 
 public class MyService extends Service {
     GLSurfaceView mySurfaceView;
     ServiceRender mServiceRender;
-
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private static final String TAG = "MyService";
+    BroadcastReceiver achievementReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
-            mServiceRender.resetAchievement();
+            int achievementType = intent.getIntExtra("achievement",-1);
+            Log.w(TAG, "achievementReceiver: IntentAction-->"+ intent.getAction()+"  IntExtra-->"+achievementType);
+            switch (achievementType){
+                case 0:
+                    mServiceRender.resetAchievement();
+                    break;
+                case 1:
+                    mServiceRender.enterAll();
+                    break;
+                case 2:
+                    mServiceRender.EnterAchievementMonth();
+                    break;
+                case 3:
+                    mServiceRender.EnterAchievementYear();
+                    break;
+                case 4:
+                    mServiceRender.EnterAchievementAll();
+                    break;
+                case 5:
+                    mServiceRender.LeaveAchievementMonth();
+                    break;
+                case 6:
+                    mServiceRender.LeaveAchievementYear();
+                    break;
+                case 7:
+                    mServiceRender.LeaveAchievementAll();
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
-    BroadcastReceiver broadcastReceiver1 = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            mServiceRender.enterAll();
-        }
-    };
     public MyService() {
-
 
     }
 
@@ -70,18 +91,9 @@ public class MyService extends Service {
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         wm.addView(mySurfaceView , params);
 
-
-
-
         IntentFilter inFilter = new IntentFilter();
-        inFilter.addAction("com.opngles.reset");
-
-        registerReceiver(broadcastReceiver,inFilter);
-
-        IntentFilter inFilter1 = new IntentFilter();
-        inFilter1.addAction("com.opngles.enter");
-
-        registerReceiver(broadcastReceiver1,inFilter1);
+        inFilter.addAction("com.opengles.servicerender");
+        registerReceiver(achievementReceiver,inFilter);
     }
 
     @Override
@@ -93,7 +105,6 @@ public class MyService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
-        unregisterReceiver(   broadcastReceiver1);
+        unregisterReceiver(achievementReceiver);
     }
 }

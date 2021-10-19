@@ -8,4 +8,11 @@
     tools:context="com.example.lijian.openesdemo.MainActivity">
 
 
+    <Button
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="JUMP"
+    android:id="@+id/main_btn_2Hello"/>
 </LinearLayout>

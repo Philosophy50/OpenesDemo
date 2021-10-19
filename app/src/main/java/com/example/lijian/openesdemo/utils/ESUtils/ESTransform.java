@@ -35,14 +35,10 @@
 //    Utility class for handling transformations
 //
 
-package com.example.lijian.openesdemo.ESUtils;
-
-import android.util.Log;
+package com.example.lijian.openesdemo.utils.ESUtils;
 
 import java.lang.Math;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
+
 //模型--视图变换函数矩阵
 public class ESTransform
 {

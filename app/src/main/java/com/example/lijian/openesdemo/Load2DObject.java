@@ -4,15 +4,13 @@ import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.os.SystemClock;
 
-import com.example.lijian.openesdemo.ESUtils.ESTransform;
+import com.example.lijian.openesdemo.utils.ESUtils.ESTransform;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-/**
- * Created by lijian on 2020/11/10.
- */
+
 
 public class Load2DObject {
     private FloatBuffer mVertexBuffer;                 //顶点坐标数据缓冲
@@ -138,7 +136,7 @@ public class Load2DObject {
         isNeedAlpha = isAlpha;
     }
 
-    public void setzSSSS(){
+    public void resetZVariation(){
         zVariation = -20f;
     }
 
@@ -214,7 +212,6 @@ public class Load2DObject {
         // Compute a rotation angle based on time to rotate the cube
 
         if(isStartPictureMove) {
-
 
             if(isNeedAlpha) {
 

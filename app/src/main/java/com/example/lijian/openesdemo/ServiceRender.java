@@ -5,7 +5,7 @@ import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 
-import com.example.lijian.openesdemo.ESUtils.ESShader;
+import com.example.lijian.openesdemo.utils.ESUtils.ESShader;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -103,36 +103,36 @@ public class ServiceRender implements GLSurfaceView.Renderer {
         mAchievementBGm.setisNeedZoom(false,true,false,false);
         mAchievementBGm.setDestination(mVerticesAchiementMonth[0],mVerticesAchiementMonth[1],true);
         mAchievementBGm.resetZoom(0.6f,false);
-        mAchievementBGm.setzSSSS();
+        mAchievementBGm.resetZVariation();
 
         mAchievementBGy     = new X2DObject(7f , 5f ,   mVerticesAchiementYear[0],mVerticesAchiementYear[1], 200f,200f,textureAchievementBG,programObject2);
         mAchievementBGy.setisNeedZoom(false,true,false,false);
         mAchievementBGy.setDestination(mVerticesAchiementYear[0],mVerticesAchiementYear[1],true);
         mAchievementBGy.resetZoom(0.8f,false);
-        mAchievementBGy.setzSSSS();
+        mAchievementBGy.resetZVariation();
 
         mAchievementBGa     = new X2DObject(7f , 5f ,  mVerticesAchiementAll[0],mVerticesAchiementAll[1], 200f,200f,textureAchievementBG,programObject2);
         mAchievementBGa.setisNeedZoom(false,true,false,false);
         mAchievementBGa.setDestination(mVerticesAchiementAll[0],mVerticesAchiementAll[1],true);
         mAchievementBGa.resetZoom(1f,false);
-        mAchievementBGa.setzSSSS();
+        mAchievementBGa.resetZVariation();
 
         //三个不同的历史记录图片
         mAchievementMonth   = new X2DObject(7f,5f,  mVerticesAchiementMonth[0],mVerticesAchiementMonth[1], 200f,200f,textureAchievementMonth,programObject2);
         mAchievementMonth.setisNeedZoom(false,true,false,false);
         mAchievementMonth.setDestination(mVerticesAchiementMonth[0],mVerticesAchiementMonth[1],true);
         mAchievementMonth.resetZoom(0.6f,false);
-        mAchievementMonth.setzSSSS();
+        mAchievementMonth.resetZVariation();
         mAchievementYear    = new X2DObject(7f,5f,  mVerticesAchiementYear[0],mVerticesAchiementYear[1], 200f,200f,textureAchievementYear,programObject2);
         mAchievementYear.setisNeedZoom(false,true,false,false);
         mAchievementYear.setDestination(mVerticesAchiementYear[0],mVerticesAchiementYear[1],true);
         mAchievementYear.resetZoom(0.8f,false);
-        mAchievementYear.setzSSSS();
+        mAchievementYear.resetZVariation();
         mAchievementAll     = new X2DObject(7f,5f, mVerticesAchiementAll[0],mVerticesAchiementAll[1],  200f,200f,textureAchievementAll,programObject2);
         mAchievementAll.setisNeedZoom(false,true,false,false);
         mAchievementAll.setDestination(mVerticesAchiementAll[0],mVerticesAchiementAll[1],true);
         mAchievementAll.resetZoom(1f,false);
-        mAchievementAll.setzSSSS();
+        mAchievementAll.resetZVariation();
 
 
         //设置可以移动
@@ -149,7 +149,7 @@ public class ServiceRender implements GLSurfaceView.Renderer {
             @Override
             public void run() {
                 Log.w("test_wl","to-> sendreset");
-             ActionInstance.getInstance().resetAchievement();
+             ActionInstance.getInstance().showAchievementYear();//resetAchievement();
               //  moveAway();
             }
         };
@@ -160,7 +160,7 @@ public class ServiceRender implements GLSurfaceView.Renderer {
             @Override
             public void run() {
                 Log.w("test_wl","to-> sendenter");
-                ActionInstance.getInstance().enterAchievement();
+                ActionInstance.getInstance().leaveAchievementYear();//enterAchievement();
                 //  moveAway();
             }
         };
@@ -179,17 +179,15 @@ public class ServiceRender implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         GLES30.glClear ( GLES30.GL_COLOR_BUFFER_BIT );
         GLES30.glViewport ( 0, 0, mWidth, mHeight );
-
+        if(ActionInstance.getInstance().getOpenglesState() == 1 ) {
             mAchievementBGm.drawSelf();
-
             mAchievementBGy.drawSelf();
-           mAchievementBGa.drawSelf();
+            mAchievementBGa.drawSelf();
 
             mAchievementMonth.drawSelf();
-
             mAchievementYear.drawSelf();
-             mAchievementAll.drawSelf();
-
+            mAchievementAll.drawSelf();
+        }
 
 
 

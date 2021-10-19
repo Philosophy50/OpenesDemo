@@ -9,9 +9,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-/**
- * Created by lijian on 2020/11/12.
- */
+
 
 public class Particle2DObject {
 
@@ -146,7 +144,7 @@ public class Particle2DObject {
         GLES30.glActiveTexture ( GLES30.GL_TEXTURE0 );
         GLES30.glBindTexture ( GLES30.GL_TEXTURE_2D, mTextureId );
 
-        // Set the sampler texture unit to 0
+        // Set the sampler texture unit to 0 v
         GLES30.glUniform1i ( mSamplerLoc, 0 );
 
         GLES30.glDrawArrays ( GLES30.GL_POINTS, 0, NUM_PARTICLES );

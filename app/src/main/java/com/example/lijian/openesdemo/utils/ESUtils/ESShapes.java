@@ -35,7 +35,7 @@
 //    Utility class for generating shapes
 //
 
-package com.example.lijian.openesdemo.ESUtils;
+package com.example.lijian.openesdemo.utils.ESUtils;
 
 import java.lang.Math;
 import java.nio.ByteBuffer;
